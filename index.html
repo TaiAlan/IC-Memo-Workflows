@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IC Memo Build Workflow Charts</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js"></script>
+  <style>
+    :root {
+      --primary: #1B3A5C;
+      --secondary: #2E75B6;
+      --accent: #4472C4;
+      --bg: #F8FAFC;
+      --card: #FFFFFF;
+      --border: #E2E8F0;
+      --text: #334155;
+      --muted: #64748B;
+      --fin: #2563EB;
+      --biz: #059669;
+      --legal: #7C3AED;
+      --syn: #D97706;
+      --lead: #DC2626;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      padding: 2rem 2rem 1rem;
+      text-align: center;
+    }
+    .header h1 { font-size: 1.75rem; font-weight: 700; margin-bottom: 0.25rem; }
+    .header p { opacity: 0.85; font-size: 0.95rem; }
+    .header .subtitle { font-size: 1.1rem; opacity: 0.9; margin-bottom: 0.5rem; }
+
+    /* Navigation Tabs */
+    .nav-container {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .nav-tabs {
+      display: flex;
+      max-width: 1400px;
+      margin: 0 auto;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+    }
+    .nav-tab {
+      padding: 0.75rem 1.25rem;
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--muted);
+      white-space: nowrap;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+    .nav-tab:hover { color: var(--primary); background: #f1f5f9; }
+    .nav-tab.active { color: var(--primary); border-bottom-color: var(--secondary); font-weight: 600; }
+    .nav-tab .dot {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    /* Content */
+    .content { max-width: 1400px; margin: 0 auto; padding: 1.5rem; }
+    .chart-section { display: none; }
+    .chart-section.active { display: block; }
+
+    .section-header {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .section-header h2 {
+      font-size: 1.35rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .section-header p { color: var(--muted); font-size: 0.9rem; }
+
+    .chart-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      overflow-x: auto;
+    }
+    .chart-card h3 {
+      font-size: 1.1rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--border);
+    }
+
+    /* Legend */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+    }
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .legend-color {
+      width: 14px;
+      height: 14px;
+      border-radius: 3px;
+    }
+
+    /* Info boxes */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .info-box {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      border-left: 4px solid var(--secondary);
+    }
+    .info-box.fin { border-left-color: var(--fin); }
+    .info-box.biz { border-left-color: var(--biz); }
+    .info-box.legal { border-left-color: var(--legal); }
+    .info-box.syn { border-left-color: var(--syn); }
+    .info-box.lead { border-left-color: var(--lead); }
+    .info-box h4 { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .info-box .value { font-size: 1.3rem; font-weight: 700; color: var(--primary); }
+    .info-box .detail { font-size: 0.8rem; color: var(--muted); margin-top: 0.15rem; }
+
+    /* Mermaid overrides */
+    .mermaid { text-align: center; }
+    .mermaid svg { max-width: 100%; height: auto; }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border);
+      margin-top: 2rem;
+    }
+
+    /* Print */
+    @media print {
+      .nav-container { display: none; }
+      .chart-section { display: block !important; page-break-before: always; }
+      .header { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header h1 { font-size: 1.3rem; }
+      .nav-tab { padding: 0.6rem 0.9rem; font-size: 0.8rem; }
+      .content { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>IC Memo Build Workflow Charts</h1>
+  <div class="subtitle">Investment Committee Memorandum &mdash; Production Playbook v2.0</div>
+  <p>Step-by-step workflows by team and overall build sequence &bull; February 2026</p>
+</div>
+
+<div class="nav-container">
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showTab('overall')">
+      <span class="dot" style="background:#1B3A5C"></span>Overall Workflow
+    </button>
+    <button class="nav-tab" onclick="showTab('deal-lead')">
+      <span class="dot" style="background:#DC2626"></span>Deal Leadership
+    </button>
+    <button class="nav-tab" onclick="showTab('financial')">
+      <span class="dot" style="background:#2563EB"></span>Financial Analysis
+    </button>
+    <button class="nav-tab" onclick="showTab('bizops')">
+      <span class="dot" style="background:#059669"></span>Business &amp; Ops
+    </button>
+    <button class="nav-tab" onclick="showTab('legal')">
+      <span class="dot" style="background:#7C3AED"></span>Legal &amp; Tax
+    </button>
+    <button class="nav-tab" onclick="showTab('synergies')">
+      <span class="dot" style="background:#D97706"></span>Synergies &amp; Integration
+    </button>
+    <button class="nav-tab" onclick="showTab('dependencies')">
+      <span class="dot" style="background:#1B3A5C"></span>Dependency Map
+    </button>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- ==================== OVERALL ==================== -->
+  <div class="chart-section active" id="overall">
+    <div class="section-header">
+      <h2>Overall IC Memo Build Workflow</h2>
+      <p>Master 10-phase build sequence showing all teams, dependencies, and parallel workstreams. Phases 1&ndash;3 are sequential foundations; Phases 4&ndash;8 run in parallel; Phases 9&ndash;10 are integrative.</p>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-box">
+        <h4>Total Phases</h4>
+        <div class="value">10</div>
+        <div class="detail">3 sequential + 5 parallel + 2 integrative</div>
+      </div>
+      <div class="info-box">
+        <h4>Elapsed Time</h4>
+        <div class="value">7&ndash;10 days</div>
+        <div class="detail">With full parallelization</div>
+      </div>
+      <div class="info-box">
+        <h4>Total Effort</h4>
+        <div class="value">15&ndash;20</div>
+        <div class="detail">Person-days across deal team</div>
+      </div>
+      <div class="info-box">
+        <h4>Source Documents</h4>
+        <div class="value">125</div>
+        <div class="detail">39 Critical &bull; 50 High &bull; 36 Medium</div>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-color" style="background:#DC2626"></div>Deal Leadership</div>
+      <div class="legend-item"><div class="legend-color" style="background:#2563EB"></div>Financial Analysis</div>
+      <div class="legend-item"><div class="legend-color" style="background:#059669"></div>Business &amp; Operations</div>
+      <div class="legend-item"><div class="legend-color" style="background:#7C3AED"></div>Legal &amp; Tax</div>
+      <div class="legend-item"><div class="legend-color" style="background:#D97706"></div>Synergies &amp; Integration</div>
+      <div class="legend-item"><div class="legend-color" style="background:#6B7280"></div>Checkpoint / Gate</div>
+    </div>
+
+    <div class="chart-card">
+      <h3>Master Build Sequence</h3>
+      <div class="mermaid">
+graph TD
+    START([VDR Access Confirmed]) --> P1
+
+    subgraph FOUNDATION ["FOUNDATION PHASES (Sequential)"]
+        direction TB
+        P1["Phase 1: Transaction Overview<br/><b>Deal Leadership</b><br/>0.5 day"]
+        P1 --> CP1{{"Checkpoint 1<br/>CIM verified, structure mapped,<br/>timeline understood"}}
+        CP1 --> P2["Phase 2: Business Description<br/><b>Business & Operations</b><br/>1-2 days"]
+        CP1 --> P3["Phase 3: Financial Foundation<br/><b>Financial Analysis</b><br/>2-3 days"]
+        P2 --> CP2{{"Checkpoint 2<br/>Brands profiled, facilities mapped,<br/>supply chain documented"}}
+        P3 --> CP3{{"Checkpoint 3<br/>Historicals normalized, EBITDA bridge built,<br/>model assumptions audited"}}
+    end
+
+    subgraph PARALLEL ["PARALLEL PHASES (Concurrent Workstreams)"]
+        direction TB
+        P4["Phase 4: Industry & Market<br/><b>Business & Operations</b><br/>1 day"]
+        P5["Phase 5: Investment Thesis<br/><b>Deal Leadership</b><br/>1 day"]
+        P6["Phase 6: Key Risks<br/><b>Deal Leadership</b><br/>1 day"]
+        P7["Phase 7: Deal Terms & Structure<br/><b>Legal & Tax</b><br/>1-2 days"]
+        P8["Phase 8: Synergies & Integration<br/><b>Synergies & Integration</b><br/>1-2 days"]
+    end
+
+    CP1 --> P4
+    CP1 --> P7
+    CP2 --> P5
+    CP2 --> P6
+    CP2 --> P8
+    CP3 --> P5
+    CP3 --> P6
+    CP3 --> P8
+    CP3 --> P9
+
+    P4 --> CP4{{"Checkpoint 4<br/>Market sized, competitors profiled"}}
+    P5 --> CP5{{"Checkpoint 5<br/>Thesis quantified, upside modeled"}}
+    P6 --> CP6{{"Checkpoint 6<br/>Risk matrix complete, sensitivities run"}}
+    P7 --> CP7{{"Checkpoint 7<br/>Cap table verified, consents tracked"}}
+    P8 --> CP8{{"Checkpoint 8<br/>Synergies quantified, integration planned"}}
+
+    subgraph INTEGRATION ["INTEGRATION PHASES (Sequential)"]
+        direction TB
+        P9["Phase 9: Valuation & Returns<br/><b>Financial Analysis</b><br/>2-3 days"]
+        P9 --> CP9{{"Checkpoint 9<br/>Valuation triangulated, returns modeled"}}
+        CP9 --> P10["Phase 10: Recommendation & Assembly<br/><b>Deal Leadership</b><br/>1 day"]
+        P10 --> CP10{{"Final Checkpoint<br/>Numbers consistent, sources traced,<br/>no contradictions"}}
+    end
+
+    CP5 --> P9
+    CP6 --> P9
+    CP8 --> P9
+    CP7 --> P9
+    CP10 --> DONE([IC Memo Complete<br/>Ready for Distribution])
+
+    style START fill:#059669,stroke:#047857,color:#fff
+    style DONE fill:#059669,stroke:#047857,color:#fff
+    style P1 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style P2 fill:#D1FAE5,stroke:#059669,color:#1e1e1e
+    style P3 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style P4 fill:#D1FAE5,stroke:#059669,color:#1e1e1e
+    style P5 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style P6 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style P7 fill:#EDE9FE,stroke:#7C3AED,color:#1e1e1e
+    style P8 fill:#FEF3C7,stroke:#D97706,color:#1e1e1e
+    style P9 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style P10 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style CP1 fill:#F3F4F6,stroke:#6B7280,color:#374151
+    style CP2 fill:#F3F4F6,stroke:#6B7280,color:#374151
+    style CP3 fill:#F3F4F6,stroke:#6B7280,color:#374151
+    style CP4 fill:#F3F4F6,stroke:#6B7280,color:#374151
+    style CP5 fill:#F3F4F6,stroke:#6B7280,color:#374151
+    style CP6 fill:#F3F4F6,stroke:#6B7280,color:#374151
+    style CP7 fill:#F3F4F6,stroke:#6B7280,color:#374151
+    style CP8 fill:#F3F4F6,stroke:#6B7280,color:#374151
+    style CP9 fill:#F3F4F6,stroke:#6B7280,color:#374151
+    style CP10 fill:#F3F4F6,stroke:#6B7280,color:#374151
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== DEAL LEADERSHIP ==================== -->
+  <div class="chart-section" id="deal-lead">
+    <div class="section-header">
+      <h2>Deal Leadership Team Workflow</h2>
+      <p>Owned by Deal Lead / MD. Responsible for Phases 1 (Transaction Overview), 5 (Investment Thesis), 6 (Key Risks), and 10 (Recommendation &amp; Final Assembly). This team coordinates all cross-team handoffs.</p>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-box lead">
+        <h4>Phases Owned</h4>
+        <div class="value">1, 5, 6, 10</div>
+      </div>
+      <div class="info-box lead">
+        <h4>Source Documents</h4>
+        <div class="value">#1-10, #51-57</div>
+        <div class="detail">Plus all phase outputs for assembly</div>
+      </div>
+      <div class="info-box lead">
+        <h4>Duration</h4>
+        <div class="value">3.5&ndash;4 days</div>
+        <div class="detail">Including final assembly</div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3>Phase 1: Transaction Overview</h3>
+      <div class="mermaid">
+graph LR
+    subgraph P1 ["Phase 1: Transaction Overview — Deal Leadership — 0.5 day"]
+        direction TB
+        S11["Step 1.1<br/>Extract company & deal profile<br/>from CIM<br/><i>#1 CIM</i>"]
+        S12["Step 1.2<br/>Map corporate structure<br/><i>#6 Org Chart, #9 Subsidiaries</i>"]
+        S13["Step 1.3<br/>Understand process & timeline<br/><i>#4 Process Letter</i>"]
+        S14["Step 1.4<br/>Cross-reference KPIs<br/><i>#3 KPI Dashboard</i>"]
+        S15["Step 1.5<br/>Review NDA & corporate docs<br/><i>#5 NDA, #7 Cert, #8 Good Standing</i>"]
+        S16["Step 1.6<br/>Draft Transaction Overview<br/><i>All Phase 1 sources</i>"]
+
+        S11 --> S12
+        S11 --> S13
+        S12 --> S16
+        S13 --> S14
+        S14 --> S16
+        S15 --> S16
+        S16 --> OUT1
+
+        OUT1(["Output:<br/>Transaction Summary Table<br/>Narrative Overview<br/>Org Chart<br/>Process Timeline"])
+    end
+
+    style S11 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style S12 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style S13 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style S14 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style S15 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style S16 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style OUT1 fill:#059669,stroke:#047857,color:#fff
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3>Phase 5: Investment Thesis &amp; Upside Case</h3>
+      <div class="mermaid">
+graph LR
+    subgraph P5 ["Phase 5: Investment Thesis — Deal Leadership — 1 day"]
+        direction TB
+
+        DEP1["Input from Phase 2<br/>Brand matrix, facility data,<br/>distribution map"]
+        DEP2["Input from Phase 3<br/>EBITDA bridge, model audit,<br/>revenue bridge"]
+        DEP3["Input from Phase 4<br/>Market overview,<br/>competitive positioning"]
+
+        S51["Step 5.1<br/>Distill top 3-5 investment<br/>highlights from Phases 2-4"]
+        S52["Step 5.2<br/>Define value creation thesis<br/><i>#36 EBITDA Bridge, #72 Synergy</i>"]
+        S53["Step 5.3<br/>Build upside case<br/><i>#53 Sensitivity, #34 Model</i>"]
+        S54["Step 5.4<br/>Identify differentiated insights"]
+        S55["Step 5.5<br/>Draft Investment Thesis section"]
+
+        DEP1 --> S51
+        DEP2 --> S51
+        DEP3 --> S51
+        S51 --> S52
+        S52 --> S53
+        S53 --> S54
+        S54 --> S55
+        S55 --> OUT5
+
+        OUT5(["Output:<br/>Thesis Statement<br/>Investment Highlights (3-5)<br/>Value Creation Bridge<br/>Upside Scenario"])
+    end
+
+    style DEP1 fill:#D1FAE5,stroke:#059669,color:#1e1e1e
+    style DEP2 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style DEP3 fill:#D1FAE5,stroke:#059669,color:#1e1e1e
+    style S51 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style S52 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style S53 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style S54 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style S55 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style OUT5 fill:#059669,stroke:#047857,color:#fff
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3>Phase 6: Key Risks</h3>
+      <div class="mermaid">
+graph LR
+    subgraph P6 ["Phase 6: Key Risks — Deal Leadership — 1 day"]
+        direction TB
+
+        DEP1["Input from Phases 2-5<br/>All flags: model audit RAG,<br/>concentration, operational deps"]
+        DEP2["Input from Phase 7<br/>Litigation, regulatory,<br/>CoC triggers"]
+
+        S61["Step 6.1<br/>Compile all prior-phase flags"]
+        S62["Step 6.2<br/>Review litigation, regulatory,<br/>environmental & tax risks<br/><i>#83, #94-104</i>"]
+        S63["Step 6.3<br/>Assess customer &<br/>revenue durability<br/><i>#54 Concentration, #55 Churn</i>"]
+        S64["Step 6.4<br/>Assess deal-specific risks<br/><i>#67 CoC, #68 Consent, #70 HSR</i>"]
+        S65["Step 6.5<br/>Build Risk Factor Matrix<br/>(min 10-15 risks)"]
+        S66["Step 6.6<br/>Build sensitivity analysis<br/>(-5%, -10% rev, margin, customer)"]
+        S67["Step 6.7<br/>Draft Key Risks section"]
+
+        DEP1 --> S61
+        DEP2 --> S62
+        S61 --> S65
+        S62 --> S65
+        S63 --> S65
+        S64 --> S65
+        S65 --> S66
+        S66 --> S67
+        S67 --> OUT6
+
+        OUT6(["Output:<br/>Risk Factor Matrix<br/>Top 5 Risk Deep-Dives<br/>Sensitivity Tables<br/>Deal-Breaker Assessment"])
+    end
+
+    style DEP1 fill:#F3F4F6,stroke:#6B7280,color:#374151
+    style DEP2 fill:#EDE9FE,stroke:#7C3AED,color:#1e1e1e
+    style S61 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style S62 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style S63 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style S64 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style S65 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style S66 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style S67 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style OUT6 fill:#059669,stroke:#047857,color:#fff
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3>Phase 10: Recommendation &amp; Final Assembly</h3>
+      <div class="mermaid">
+graph LR
+    subgraph P10 ["Phase 10: Recommendation & Assembly — Deal Leadership — 1 day"]
+        direction TB
+
+        ALL["All Phase 1-9 Outputs"]
+
+        S101["Step 10.1<br/>Draft recommendation:<br/>Proceed / Conditions / Do Not Proceed"]
+        S102["Step 10.2<br/>Write Executive Summary<br/>(1-2 pages, standalone)"]
+        S103["Step 10.3<br/>Compile Appendix<br/>(all exhibits, numbered)"]
+        S104["Step 10.4<br/>Full document review:<br/>consistency, traceability,<br/>thesis-risk coherence"]
+        S105["Step 10.5<br/>Senior review &<br/>finalization"]
+
+        ALL --> S101
+        ALL --> S102
+        S101 --> S103
+        S102 --> S103
+        S103 --> S104
+        S104 --> S105
+        S105 --> DONE
+
+        DONE(["IC MEMO COMPLETE<br/>Ready for IC Distribution"])
+    end
+
+    style ALL fill:#F3F4F6,stroke:#6B7280,color:#374151
+    style S101 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style S102 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style S103 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style S104 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style S105 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style DONE fill:#059669,stroke:#047857,color:#fff
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== FINANCIAL ANALYSIS ==================== -->
+  <div class="chart-section" id="financial">
+    <div class="section-header">
+      <h2>Financial Analysis Team Workflow</h2>
+      <p>Owned by Senior Associate / VP. Responsible for Phase 3 (Financial Foundation) and Phase 9 (Valuation &amp; Returns). This team produces the analytical backbone of the memo.</p>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-box fin">
+        <h4>Phases Owned</h4>
+        <div class="value">3, 9</div>
+      </div>
+      <div class="info-box fin">
+        <h4>Source Documents</h4>
+        <div class="value">#30-50, #54, #120-123</div>
+        <div class="detail">Plus Phase 8 synergy outputs</div>
+      </div>
+      <div class="info-box fin">
+        <h4>Duration</h4>
+        <div class="value">4&ndash;6 days</div>
+        <div class="detail">Most labor-intensive team</div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3>Phase 3: Financial Foundation</h3>
+      <div class="mermaid">
+graph TB
+    subgraph P3 ["Phase 3: Financial Foundation — Financial Analysis — 2-3 days"]
+        direction TB
+
+        DEP["Input: Phase 1 complete<br/>Financial Model received"]
+
+        S31["Step 3.1<br/>Compile historical financials<br/>(3-5yr IS, BS, CF)<br/><i>#30 Audited, #31 Interim</i>"]
+        S32["Step 3.2<br/>Revenue bridge &<br/>concentration analysis<br/><i>#33 Revenue Disagg, #54 Customer</i>"]
+        S33["Step 3.3<br/>Validate model &<br/>build EBITDA bridge<br/><i>#34 Model, #35 BvA, #36 EBITDA</i>"]
+        S34["Step 3.4<br/>Working capital analysis<br/><i>#37 WC, #38 AR, #39 AP, #40 Inv</i>"]
+        S35["Step 3.5<br/>Debt & covenant analysis<br/><i>#41 Debt, #42 Covenant, #44 Maturity</i>"]
+        S36["Step 3.6<br/>Capex & accounting review<br/><i>#43 Capex, #120 RevRec, #121 Impairment</i>"]
+        S37["Step 3.7<br/>Compile financial<br/>analysis package"]
+
+        DEP --> S31
+        S31 --> S32
+        S31 --> S34
+        S31 --> S35
+        S32 --> S33
+        S33 --> S37
+        S34 --> S37
+        S35 --> S37
+        S36 --> S37
+        S37 --> OUT3
+
+        OUT3(["Output:<br/>Historical Summary | LTM Build<br/>Revenue Bridge | EBITDA Bridge<br/>WC Analysis | Debt Schedule<br/>Capex Analysis | Model Audit"])
+    end
+
+    HAND1["Handoff to Deal Leadership<br/>Phases 5 & 6"]
+    HAND2["Handoff to Synergies<br/>Phase 8"]
+    HAND3["Feeds into<br/>Phase 9: Valuation"]
+
+    OUT3 --> HAND1
+    OUT3 --> HAND2
+    OUT3 --> HAND3
+
+    style DEP fill:#F3F4F6,stroke:#6B7280,color:#374151
+    style S31 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style S32 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style S33 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style S34 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style S35 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style S36 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style S37 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style OUT3 fill:#059669,stroke:#047857,color:#fff
+    style HAND1 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style HAND2 fill:#FEF3C7,stroke:#D97706,color:#1e1e1e
+    style HAND3 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3>Phase 9: Valuation &amp; Returns</h3>
+      <div class="mermaid">
+graph TB
+    subgraph P9 ["Phase 9: Valuation & Returns — Financial Analysis — 2-3 days"]
+        direction TB
+
+        DEP1["Input: Phase 3<br/>Financial package"]
+        DEP2["Input: Phase 5<br/>Thesis & upside"]
+        DEP3["Input: Phase 6<br/>Risk matrix"]
+        DEP4["Input: Phase 7<br/>Diluted shares, 382"]
+        DEP5["Input: Phase 8<br/>Synergy estimates"]
+
+        S91["Step 9.1<br/>Comparable companies<br/><i>#46 Comps</i>"]
+        S92["Step 9.2<br/>Precedent transactions<br/><i>#47 Precedents, #48 Premiums</i>"]
+        S93["Step 9.3<br/>DCF model<br/><i>#50 DCF, #34 Model</i>"]
+        S94["Step 9.4<br/>Valuation triangulation<br/>(football field)"]
+        S95["Step 9.5<br/>Returns analysis<br/>(IRR/MOIC: base/down/up)"]
+        S96["Step 9.6<br/>Premium analysis"]
+        S97["Step 9.7<br/>Sources & uses table"]
+        S98["Step 9.8<br/>Draft Valuation section"]
+
+        DEP1 --> S91
+        DEP1 --> S92
+        DEP1 --> S93
+        DEP4 --> S93
+        DEP5 --> S95
+        S91 --> S94
+        S92 --> S94
+        S93 --> S94
+        S94 --> S95
+        DEP2 --> S95
+        DEP3 --> S95
+        S94 --> S96
+        S95 --> S97
+        S96 --> S98
+        S97 --> S98
+        S98 --> OUT9
+
+        OUT9(["Output:<br/>Comps Table | Precedents Table<br/>DCF Summary | Football Field<br/>Returns (3 scenarios) | S&U"])
+    end
+
+    style DEP1 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style DEP2 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style DEP3 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style DEP4 fill:#EDE9FE,stroke:#7C3AED,color:#1e1e1e
+    style DEP5 fill:#FEF3C7,stroke:#D97706,color:#1e1e1e
+    style S91 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style S92 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style S93 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style S94 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style S95 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style S96 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style S97 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style S98 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style OUT9 fill:#059669,stroke:#047857,color:#fff
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== BUSINESS & OPS ==================== -->
+  <div class="chart-section" id="bizops">
+    <div class="section-header">
+      <h2>Business &amp; Operations Team Workflow</h2>
+      <p>Owned by Associate / Analyst. Responsible for Phase 2 (Business Description) and Phase 4 (Industry &amp; Market Context). Produces the factual backbone of the memo.</p>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-box biz">
+        <h4>Phases Owned</h4>
+        <div class="value">2, 4</div>
+      </div>
+      <div class="info-box biz">
+        <h4>Source Documents</h4>
+        <div class="value">#11-29, #33, #56</div>
+        <div class="detail">Business ops, market & competitive</div>
+      </div>
+      <div class="info-box biz">
+        <h4>Duration</h4>
+        <div class="value">2&ndash;3 days</div>
+        <div class="detail">Phases 2 & 4 can partially overlap</div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3>Phase 2: Business Description</h3>
+      <div class="mermaid">
+graph TB
+    subgraph P2 ["Phase 2: Business Description — Biz & Ops — 1-2 days"]
+        direction TB
+
+        DEP["Input: Phase 1 complete"]
+
+        S21["Step 2.1<br/>Build brand/product matrix<br/><i>#11 Brand, #12 SKU, #33 Revenue</i>"]
+        S22["Step 2.2<br/>Analyze facilities &<br/>unit economics<br/><i>#13-15 Facility/Capacity/Cost, #43 Capex</i>"]
+        S23["Step 2.3<br/>Map supply chain<br/><i>#17 Suppliers, #18 Inputs</i>"]
+        S24["Step 2.4<br/>Map distribution network<br/><i>#19 Distribution, #20 Agreements</i>"]
+        S25["Step 2.5<br/>Review locations & QC<br/><i>#21 Location P&L, #22 Leases, #16 QC</i>"]
+        S26["Step 2.6<br/>Draft Business Description<br/>(4-6 pages)"]
+
+        DEP --> S21
+        DEP --> S22
+        DEP --> S23
+        DEP --> S24
+        DEP --> S25
+        S21 --> S26
+        S22 --> S26
+        S23 --> S26
+        S24 --> S26
+        S25 --> S26
+        S26 --> OUT2
+
+        OUT2(["Output:<br/>Brand Matrix | Facility Table<br/>Unit Economics | Supply Chain<br/>Distribution Map | Location P&L"])
+    end
+
+    HAND1["Handoff to Deal Leadership<br/>Phases 5 & 6"]
+    HAND2["Handoff to Synergies<br/>Phase 8"]
+
+    OUT2 --> HAND1
+    OUT2 --> HAND2
+
+    style DEP fill:#F3F4F6,stroke:#6B7280,color:#374151
+    style S21 fill:#D1FAE5,stroke:#059669,color:#1e1e1e
+    style S22 fill:#D1FAE5,stroke:#059669,color:#1e1e1e
+    style S23 fill:#D1FAE5,stroke:#059669,color:#1e1e1e
+    style S24 fill:#D1FAE5,stroke:#059669,color:#1e1e1e
+    style S25 fill:#D1FAE5,stroke:#059669,color:#1e1e1e
+    style S26 fill:#D1FAE5,stroke:#059669,color:#1e1e1e
+    style OUT2 fill:#059669,stroke:#047857,color:#fff
+    style HAND1 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style HAND2 fill:#FEF3C7,stroke:#D97706,color:#1e1e1e
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3>Phase 4: Industry &amp; Market Context</h3>
+      <div class="mermaid">
+graph TB
+    subgraph P4 ["Phase 4: Industry & Market — Biz & Ops — 1 day"]
+        direction TB
+
+        DEP["Input: Phase 1 complete"]
+
+        S41["Step 4.1<br/>Extract market data<br/>(TAM, growth, drivers)<br/><i>#24 Industry, #25 Stats</i>"]
+        S42["Step 4.2<br/>Analyze competitive landscape<br/>(3-5 competitors profiled)<br/><i>#26 Competitors, #27 Share, #56 Bench</i>"]
+        S43["Step 4.3<br/>Consumer insights &<br/>emerging threats<br/><i>#28 Consumer, #29 Pipeline</i>"]
+        S44["Step 4.4<br/>Draft Industry & Market section<br/>(2-3 pages)"]
+
+        DEP --> S41
+        DEP --> S42
+        DEP --> S43
+        S41 --> S44
+        S42 --> S44
+        S43 --> S44
+        S44 --> OUT4
+
+        OUT4(["Output:<br/>Market Overview<br/>Competitive Positioning Matrix<br/>Market Share Table<br/>Emerging Threats Assessment"])
+    end
+
+    style DEP fill:#F3F4F6,stroke:#6B7280,color:#374151
+    style S41 fill:#D1FAE5,stroke:#059669,color:#1e1e1e
+    style S42 fill:#D1FAE5,stroke:#059669,color:#1e1e1e
+    style S43 fill:#D1FAE5,stroke:#059669,color:#1e1e1e
+    style S44 fill:#D1FAE5,stroke:#059669,color:#1e1e1e
+    style OUT4 fill:#059669,stroke:#047857,color:#fff
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== LEGAL & TAX ==================== -->
+  <div class="chart-section" id="legal">
+    <div class="section-header">
+      <h2>Legal &amp; Tax Team Workflow</h2>
+      <p>Owned by Counsel / Tax Advisor. Responsible for Phase 7 (Deal Terms &amp; Structure). Produces the capitalization, change-of-control, consent, 280G/382, and regulatory analysis.</p>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-box legal">
+        <h4>Phases Owned</h4>
+        <div class="value">7</div>
+      </div>
+      <div class="info-box legal">
+        <h4>Source Documents</h4>
+        <div class="value">#58-71, #83-104</div>
+        <div class="detail">Deal docs, legal, regulatory, tax</div>
+      </div>
+      <div class="info-box legal">
+        <h4>Duration</h4>
+        <div class="value">1&ndash;2 days</div>
+        <div class="detail">Can begin after Phase 1</div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3>Phase 7: Deal Terms &amp; Structure</h3>
+      <div class="mermaid">
+graph TB
+    subgraph P7 ["Phase 7: Deal Terms & Structure — Legal & Tax — 1-2 days"]
+        direction TB
+
+        DEP["Input: Phase 1 complete<br/>Deal documents received"]
+
+        S71["Step 7.1<br/>Fully diluted cap table<br/><i>#62 Cap Table, #63 Equity Plans, #64 Awards</i>"]
+        S72["Step 7.2<br/>Change-of-control matrix<br/><i>#67 CoC, #41 Debt, #20 Dist, #78 Employment</i>"]
+        S73["Step 7.3<br/>Consent & approval tracker<br/><i>#68 Consent Matrix</i>"]
+        S74["Step 7.4<br/>Board authorization &<br/>deal process review<br/><i>#58 Board, #59 Advisor, #60 Fairness, #61 LOIs</i>"]
+        S75["Step 7.5<br/>Shareholder agreement review<br/><i>#65 Shareholder, #66 Strategic Partner</i>"]
+        S76["Step 7.6<br/>280G golden parachute analysis<br/><i>#69 280G, #82 Severance</i>"]
+        S77["Step 7.7<br/>HSR/antitrust assessment<br/><i>#70 HSR</i>"]
+        S78["Step 7.8<br/>Section 382 NOL analysis<br/><i>#101 Section 382, #103 Excise</i>"]
+        S79["Step 7.9<br/>RWI pre-diligence report<br/><i>#71 RWI</i>"]
+        S710["Step 7.10<br/>Draft Deal Terms section"]
+
+        DEP --> S71
+        DEP --> S72
+        DEP --> S73
+        DEP --> S74
+        DEP --> S75
+        S71 --> S710
+        S72 --> S710
+        S73 --> S710
+        S74 --> S710
+        S75 --> S710
+        S76 --> S710
+        S77 --> S710
+        S78 --> S710
+        S79 --> S710
+        S710 --> OUT7
+
+        OUT7(["Output:<br/>Cap Table Build | CoC Matrix<br/>Consent Tracker | Deal Process<br/>280G & 382 Impact | HSR Timeline"])
+    end
+
+    HAND1["Handoff to Financial Analysis<br/>Phase 9: Diluted shares, 382 NOL"]
+    HAND2["Handoff to Deal Leadership<br/>Phase 6: Litigation, CoC risks"]
+
+    OUT7 --> HAND1
+    OUT7 --> HAND2
+
+    style DEP fill:#F3F4F6,stroke:#6B7280,color:#374151
+    style S71 fill:#EDE9FE,stroke:#7C3AED,color:#1e1e1e
+    style S72 fill:#EDE9FE,stroke:#7C3AED,color:#1e1e1e
+    style S73 fill:#EDE9FE,stroke:#7C3AED,color:#1e1e1e
+    style S74 fill:#EDE9FE,stroke:#7C3AED,color:#1e1e1e
+    style S75 fill:#EDE9FE,stroke:#7C3AED,color:#1e1e1e
+    style S76 fill:#EDE9FE,stroke:#7C3AED,color:#1e1e1e
+    style S77 fill:#EDE9FE,stroke:#7C3AED,color:#1e1e1e
+    style S78 fill:#EDE9FE,stroke:#7C3AED,color:#1e1e1e
+    style S79 fill:#EDE9FE,stroke:#7C3AED,color:#1e1e1e
+    style S710 fill:#EDE9FE,stroke:#7C3AED,color:#1e1e1e
+    style OUT7 fill:#059669,stroke:#047857,color:#fff
+    style HAND1 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style HAND2 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== SYNERGIES & INTEGRATION ==================== -->
+  <div class="chart-section" id="synergies">
+    <div class="section-header">
+      <h2>Synergies &amp; Integration Team Workflow</h2>
+      <p>Owned by VP / Operating Partner. Responsible for Phase 8 (Synergies &amp; Integration). Quantifies synergies, plans integration, and assesses people/IT integration.</p>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-box syn">
+        <h4>Phases Owned</h4>
+        <div class="value">8</div>
+      </div>
+      <div class="info-box syn">
+        <h4>Source Documents</h4>
+        <div class="value">#72-82, #111, #117</div>
+        <div class="detail">Synergy, integration, HR, IT</div>
+      </div>
+      <div class="info-box syn">
+        <h4>Duration</h4>
+        <div class="value">1&ndash;2 days</div>
+        <div class="detail">Requires Phase 2-3 outputs</div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3>Phase 8: Synergies &amp; Integration</h3>
+      <div class="mermaid">
+graph TB
+    subgraph P8 ["Phase 8: Synergies & Integration — Synergies Team — 1-2 days"]
+        direction TB
+
+        DEP1["Input from Phase 2<br/>Facility ops, headcount, IT inventory"]
+        DEP2["Input from Phase 3<br/>Cost structure, WC baseline, capex"]
+
+        S81["Step 8.1<br/>Categorize & quantify synergies<br/>(cost + revenue, confidence-weighted)<br/><i>#72 Synergy Analysis</i>"]
+        S82["Step 8.2<br/>Estimate one-time costs<br/>to achieve synergies"]
+        S83["Step 8.3<br/>Review prior acquisition<br/>integration performance<br/><i>#74 Integration Reports, #117 Prior Acq</i>"]
+        S84["Step 8.4<br/>Outline integration plan<br/>(Day 1, 30/60/90, Year 1)<br/><i>#73 Integration Playbook</i>"]
+        S85["Step 8.5<br/>People & org integration<br/><i>#76-82 People/Key Man/Employment/Comp</i>"]
+        S86["Step 8.6<br/>IT systems integration<br/><i>#75 IT Assessment, #111 IT Overview</i>"]
+        S87["Step 8.7<br/>Draft Synergies & Integration<br/>section with waterfall"]
+
+        DEP1 --> S81
+        DEP2 --> S81
+        S81 --> S82
+        S82 --> S83
+        S83 --> S84
+        S84 --> S85
+        S84 --> S86
+        S85 --> S87
+        S86 --> S87
+        S87 --> OUT8
+
+        OUT8(["Output:<br/>Synergy Summary Table<br/>Synergy Waterfall<br/>Integration Timeline<br/>People Plan | IT Assessment"])
+    end
+
+    HAND1["Handoff to Financial Analysis<br/>Phase 9: Run-rate synergies,<br/>costs to achieve, phasing"]
+
+    OUT8 --> HAND1
+
+    style DEP1 fill:#D1FAE5,stroke:#059669,color:#1e1e1e
+    style DEP2 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style S81 fill:#FEF3C7,stroke:#D97706,color:#1e1e1e
+    style S82 fill:#FEF3C7,stroke:#D97706,color:#1e1e1e
+    style S83 fill:#FEF3C7,stroke:#D97706,color:#1e1e1e
+    style S84 fill:#FEF3C7,stroke:#D97706,color:#1e1e1e
+    style S85 fill:#FEF3C7,stroke:#D97706,color:#1e1e1e
+    style S86 fill:#FEF3C7,stroke:#D97706,color:#1e1e1e
+    style S87 fill:#FEF3C7,stroke:#D97706,color:#1e1e1e
+    style OUT8 fill:#059669,stroke:#047857,color:#fff
+    style HAND1 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== DEPENDENCY MAP ==================== -->
+  <div class="chart-section" id="dependencies">
+    <div class="section-header">
+      <h2>Cross-Team Dependency Map</h2>
+      <p>Shows all inter-team handoffs, document flows, and phase-gate dependencies. Every arrow represents a deliverable that the producing team must complete before the consuming team can proceed.</p>
+    </div>
+
+    <div class="chart-card">
+      <h3>Team-to-Team Data Flow</h3>
+      <div class="mermaid">
+graph LR
+    subgraph DL ["Deal Leadership"]
+        P1["Phase 1<br/>Transaction Overview"]
+        P5["Phase 5<br/>Investment Thesis"]
+        P6["Phase 6<br/>Key Risks"]
+        P10["Phase 10<br/>Recommendation"]
+    end
+
+    subgraph FA ["Financial Analysis"]
+        P3["Phase 3<br/>Financial Foundation"]
+        P9["Phase 9<br/>Valuation & Returns"]
+    end
+
+    subgraph BO ["Business & Operations"]
+        P2["Phase 2<br/>Business Description"]
+        P4["Phase 4<br/>Industry & Market"]
+    end
+
+    subgraph LT ["Legal & Tax"]
+        P7["Phase 7<br/>Deal Terms"]
+    end
+
+    subgraph SI ["Synergies & Integration"]
+        P8["Phase 8<br/>Synergies"]
+    end
+
+    P1 -->|"Context & timeline"| P2
+    P1 -->|"Context & timeline"| P3
+    P1 -->|"Context & timeline"| P4
+    P1 -->|"Context & timeline"| P7
+
+    P2 -->|"Brand, facility,<br/>supply chain data"| P5
+    P2 -->|"Operational flags"| P6
+    P2 -->|"Facility ops, headcount,<br/>IT inventory"| P8
+
+    P3 -->|"EBITDA bridge,<br/>model audit"| P5
+    P3 -->|"RAG ratings,<br/>concentration risks"| P6
+    P3 -->|"Cost structure,<br/>WC baseline"| P8
+    P3 -->|"Financial package"| P9
+
+    P4 -->|"Market data,<br/>competitive position"| P5
+
+    P5 -->|"Thesis &<br/>upside case"| P9
+    P6 -->|"Risk matrix &<br/>sensitivities"| P9
+
+    P7 -->|"Diluted shares,<br/>382 NOL"| P9
+    P7 -->|"Litigation,<br/>CoC triggers"| P6
+
+    P8 -->|"Synergy estimates,<br/>costs to achieve"| P9
+
+    P9 -->|"Valuation &<br/>returns"| P10
+    P5 -->|"Thesis"| P10
+    P6 -->|"Risks"| P10
+
+    style P1 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style P5 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style P6 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style P10 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style P3 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style P9 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style P2 fill:#D1FAE5,stroke:#059669,color:#1e1e1e
+    style P4 fill:#D1FAE5,stroke:#059669,color:#1e1e1e
+    style P7 fill:#EDE9FE,stroke:#7C3AED,color:#1e1e1e
+    style P8 fill:#FEF3C7,stroke:#D97706,color:#1e1e1e
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3>Timeline View (Gantt-Style)</h3>
+      <div class="mermaid">
+gantt
+    title IC Memo Build Timeline
+    dateFormat  YYYY-MM-DD
+    axisFormat  Day %e
+
+    section Deal Leadership
+    Phase 1 - Transaction Overview       :done, p1, 2026-03-02, 0.5d
+    Phase 5 - Investment Thesis          :active, p5, after p2, 1d
+    Phase 6 - Key Risks                  :active, p6, after p3, 1d
+    Phase 10 - Recommendation & Assembly :crit, p10, after p9, 1d
+
+    section Financial Analysis
+    Phase 3 - Financial Foundation       :active, p3, after p1, 3d
+    Phase 9 - Valuation & Returns        :crit, p9, after p8, 3d
+
+    section Business & Operations
+    Phase 2 - Business Description       :active, p2, after p1, 2d
+    Phase 4 - Industry & Market          :active, p4, after p1, 1d
+
+    section Legal & Tax
+    Phase 7 - Deal Terms & Structure     :active, p7, after p1, 2d
+
+    section Synergies & Integration
+    Phase 8 - Synergies & Integration    :active, p8, after p3, 2d
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3>Document Priority Distribution</h3>
+      <div class="mermaid">
+pie title Source Documents by Priority Level
+    "Critical (39)" : 39
+    "High (50)" : 50
+    "Medium (36)" : 36
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <p>IC Memo Build Workflow Charts &bull; Version 2.0 &bull; February 2026</p>
+  <p>Generated from IC Memo Build Guide &amp; Production Playbook</p>
+</div>
+
+<script>
+  // Initialize Mermaid
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#DBEAFE',
+      primaryTextColor: '#1e3a5f',
+      primaryBorderColor: '#2563EB',
+      lineColor: '#64748B',
+      secondaryColor: '#F1F5F9',
+      tertiaryColor: '#F8FAFC',
+      fontFamily: '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
+      fontSize: '13px',
+      nodeBorder: '1.5px',
+    },
+    flowchart: {
+      useMaxWidth: true,
+      htmlLabels: true,
+      curve: 'basis',
+      rankSpacing: 50,
+      nodeSpacing: 30,
+      padding: 15,
+    },
+    gantt: {
+      useMaxWidth: true,
+      fontSize: 12,
+      barHeight: 24,
+      barGap: 6,
+      topPadding: 50,
+      sidePadding: 60,
+    },
+  });
+
+  // Tab switching
+  function showTab(tabId) {
+    // Hide all sections
+    document.querySelectorAll('.chart-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+
+    // Show selected
+    document.getElementById(tabId).classList.add('active');
+    event.currentTarget.classList.add('active');
+
+    // Render any unrendered mermaid charts in the active section
+    renderMermaid(tabId);
+  }
+
+  // Render mermaid charts lazily per tab
+  const renderedTabs = new Set();
+
+  async function renderMermaid(tabId) {
+    if (renderedTabs.has(tabId)) return;
+    renderedTabs.add(tabId);
+
+    const section = document.getElementById(tabId);
+    const charts = section.querySelectorAll('.mermaid');
+
+    for (const chart of charts) {
+      if (chart.getAttribute('data-processed')) continue;
+      const id = 'mermaid-' + Math.random().toString(36).substr(2, 9);
+      try {
+        const { svg } = await mermaid.render(id, chart.textContent.trim());
+        chart.innerHTML = svg;
+        chart.setAttribute('data-processed', 'true');
+      } catch (e) {
+        console.error('Mermaid render error:', e);
+        chart.innerHTML = '<p style="color:red">Chart rendering error. Check console.</p>';
+      }
+    }
+  }
+
+  // Render initial tab on load
+  document.addEventListener('DOMContentLoaded', () => {
+    renderMermaid('overall');
+  });
+</script>
+
+</body>
+</html>
