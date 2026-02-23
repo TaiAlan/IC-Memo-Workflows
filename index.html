@@ -278,7 +278,7 @@ graph TD
     subgraph FOUNDATION ["FOUNDATION PHASES (Sequential)"]
         direction TB
         P1["Phase 1: Transaction Overview<br/><b>Deal Leadership</b><br/>0.5 day"]
-        P1 --> CP1{{"Checkpoint 1<br/>CIM verified, mgmt pres reviewed,<br/>structure mapped, timeline set"}}
+        P1 --> CP1{{"Checkpoint 1<br/>CIM verified, mgmt pres reviewed,<br/>market pricing compiled, timeline set"}}
         CP1 --> P2["Phase 2: Business Description<br/><b>Business & Operations</b><br/>1-2 days"]
         CP1 --> P3["Phase 3: Financial Foundation<br/><b>Financial Analysis</b><br/>2-3 days"]
         P2 --> CP2{{"Checkpoint 2<br/>Brands profiled, facilities mapped,<br/>supply chain documented"}}
@@ -304,10 +304,10 @@ graph TD
     CP3 --> P8
     CP3 --> P9
 
-    P4 --> CP4{{"Checkpoint 4<br/>Market sized, competitors profiled"}}
+    P4 --> CP4{{"Checkpoint 4<br/>Market sized, competitors profiled,<br/>Wall Street consensus compared"}}
     P5 --> CP5{{"Checkpoint 5<br/>Thesis quantified, upside modeled"}}
     P6 --> CP6{{"Checkpoint 6<br/>Risk matrix complete, sensitivities run"}}
-    P7 --> CP7{{"Checkpoint 7<br/>Cap table verified, 13F analyzed,<br/>consents tracked"}}
+    P7 --> CP7{{"Checkpoint 7<br/>Cap table verified, 13F analyzed,<br/>voting matrix built, consents tracked"}}
     P8 --> CP8{{"Checkpoint 8<br/>Synergies quantified, integration planned"}}
 
     subgraph INTEGRATION ["INTEGRATION PHASES (Sequential)"]
@@ -398,7 +398,7 @@ graph LR
         S16 --> S17
         S17 --> OUT1
 
-        OUT1(["Output:<br/>Transaction Summary Table<br/>Mgmt Presentation Analysis<br/>Narrative Overview<br/>Org Chart | Process Timeline"])
+        OUT1(["Output:<br/>Transaction Summary Table<br/>(incl. market pricing & premium)<br/>Mgmt Presentation Analysis<br/>Narrative | Org Chart | Timeline"])
     end
 
     style S11 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
@@ -776,7 +776,7 @@ graph TB
         S43 --> S44
         S44 --> OUT4
 
-        OUT4(["Output:<br/>Market Overview<br/>Competitive Positioning Matrix<br/>Market Share Table<br/>Emerging Threats Assessment"])
+        OUT4(["Output:<br/>Market Overview<br/>Competitive Positioning Matrix<br/>Market Share Table<br/>Emerging Threats | Wall Street View"])
     end
 
     style DEP fill:#F3F4F6,stroke:#6B7280,color:#374151
@@ -852,7 +852,7 @@ graph TB
         S710 --> S711
         S711 --> OUT7
 
-        OUT7(["Output:<br/>Cap Table Build | 13F Analysis<br/>CoC Matrix | Consent Tracker<br/>Deal Process | 280G & 382 Impact<br/>HSR Timeline"])
+        OUT7(["Output:<br/>Cap Table Build | 13F Analysis<br/>Voting Matrix | CoC Matrix<br/>Consent Tracker | Deal Process<br/>280G & 382 | HSR Timeline"])
     end
 
     HAND1["Handoff to Financial Analysis<br/>Phase 9: Diluted shares, 382 NOL"]
