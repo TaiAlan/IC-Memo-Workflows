@@ -198,7 +198,7 @@
 
 <div class="header">
   <h1>IC Memo Build Workflow Charts</h1>
-  <div class="subtitle">Investment Committee Memorandum &mdash; Production Playbook v2.0</div>
+  <div class="subtitle">Investment Committee Memorandum &mdash; Production Playbook v3.0</div>
   <p>Step-by-step workflows by team and overall build sequence &bull; February 2026</p>
 </div>
 
@@ -255,8 +255,8 @@
       </div>
       <div class="info-box">
         <h4>Source Documents</h4>
-        <div class="value">125</div>
-        <div class="detail">39 Critical &bull; 50 High &bull; 36 Medium</div>
+        <div class="value">129</div>
+        <div class="detail">45 Critical &bull; 62 High &bull; 22 Medium</div>
       </div>
     </div>
 
@@ -278,11 +278,11 @@ graph TD
     subgraph FOUNDATION ["FOUNDATION PHASES (Sequential)"]
         direction TB
         P1["Phase 1: Transaction Overview<br/><b>Deal Leadership</b><br/>0.5 day"]
-        P1 --> CP1{{"Checkpoint 1<br/>CIM verified, structure mapped,<br/>timeline understood"}}
+        P1 --> CP1{{"Checkpoint 1<br/>CIM verified, mgmt pres reviewed,<br/>structure mapped, timeline set"}}
         CP1 --> P2["Phase 2: Business Description<br/><b>Business & Operations</b><br/>1-2 days"]
         CP1 --> P3["Phase 3: Financial Foundation<br/><b>Financial Analysis</b><br/>2-3 days"]
         P2 --> CP2{{"Checkpoint 2<br/>Brands profiled, facilities mapped,<br/>supply chain documented"}}
-        P3 --> CP3{{"Checkpoint 3<br/>Historicals normalized, EBITDA bridge built,<br/>model assumptions audited"}}
+        P3 --> CP3{{"Checkpoint 3<br/>Historicals normalized, QoE reconciled,<br/>EBITDA bridge built, model audited"}}
     end
 
     subgraph PARALLEL ["PARALLEL PHASES (Concurrent Workstreams)"]
@@ -307,13 +307,13 @@ graph TD
     P4 --> CP4{{"Checkpoint 4<br/>Market sized, competitors profiled"}}
     P5 --> CP5{{"Checkpoint 5<br/>Thesis quantified, upside modeled"}}
     P6 --> CP6{{"Checkpoint 6<br/>Risk matrix complete, sensitivities run"}}
-    P7 --> CP7{{"Checkpoint 7<br/>Cap table verified, consents tracked"}}
+    P7 --> CP7{{"Checkpoint 7<br/>Cap table verified, 13F analyzed,<br/>consents tracked"}}
     P8 --> CP8{{"Checkpoint 8<br/>Synergies quantified, integration planned"}}
 
     subgraph INTEGRATION ["INTEGRATION PHASES (Sequential)"]
         direction TB
         P9["Phase 9: Valuation & Returns<br/><b>Financial Analysis</b><br/>2-3 days"]
-        P9 --> CP9{{"Checkpoint 9<br/>Valuation triangulated, returns modeled"}}
+        P9 --> CP9{{"Checkpoint 9<br/>Valuation triangulated, trading analyzed,<br/>returns modeled"}}
         CP9 --> P10["Phase 10: Recommendation & Assembly<br/><b>Deal Leadership</b><br/>1 day"]
         P10 --> CP10{{"Final Checkpoint<br/>Numbers consistent, sources traced,<br/>no contradictions"}}
     end
@@ -364,7 +364,7 @@ graph TD
       </div>
       <div class="info-box lead">
         <h4>Source Documents</h4>
-        <div class="value">#1-10, #51-57</div>
+        <div class="value">#1-10, #54-60</div>
         <div class="detail">Plus all phase outputs for assembly</div>
       </div>
       <div class="info-box lead">
@@ -381,21 +381,24 @@ graph LR
     subgraph P1 ["Phase 1: Transaction Overview — Deal Leadership — 0.5 day"]
         direction TB
         S11["Step 1.1<br/>Extract company & deal profile<br/>from CIM<br/><i>#1 CIM</i>"]
-        S12["Step 1.2<br/>Map corporate structure<br/><i>#6 Org Chart, #9 Subsidiaries</i>"]
-        S13["Step 1.3<br/>Understand process & timeline<br/><i>#4 Process Letter</i>"]
-        S14["Step 1.4<br/>Cross-reference KPIs<br/><i>#3 KPI Dashboard</i>"]
-        S15["Step 1.5<br/>Review NDA & corporate docs<br/><i>#5 NDA, #7 Cert, #8 Good Standing</i>"]
-        S16["Step 1.6<br/>Draft Transaction Overview<br/><i>All Phase 1 sources</i>"]
+        S12["Step 1.2<br/>Review Management Presentation<br/>(buy-side analysis)<br/><i>#2 Mgmt Presentation</i>"]
+        S13["Step 1.3<br/>Map corporate structure<br/><i>#7 Org Chart, #10 Subsidiaries</i>"]
+        S14["Step 1.4<br/>Understand process & timeline<br/><i>#5 Process Letter</i>"]
+        S15["Step 1.5<br/>Cross-reference KPIs<br/><i>#4 KPI Dashboard</i>"]
+        S16["Step 1.6<br/>Review NDA & corporate docs<br/><i>#6 NDA, #8 Cert, #9 Good Standing</i>"]
+        S17["Step 1.7<br/>Draft Transaction Overview<br/><i>All Phase 1 sources</i>"]
 
         S11 --> S12
         S11 --> S13
-        S12 --> S16
-        S13 --> S14
-        S14 --> S16
-        S15 --> S16
-        S16 --> OUT1
+        S11 --> S14
+        S12 --> S17
+        S13 --> S17
+        S14 --> S15
+        S15 --> S17
+        S16 --> S17
+        S17 --> OUT1
 
-        OUT1(["Output:<br/>Transaction Summary Table<br/>Narrative Overview<br/>Org Chart<br/>Process Timeline"])
+        OUT1(["Output:<br/>Transaction Summary Table<br/>Mgmt Presentation Analysis<br/>Narrative Overview<br/>Org Chart | Process Timeline"])
     end
 
     style S11 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
@@ -404,6 +407,7 @@ graph LR
     style S14 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
     style S15 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
     style S16 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
+    style S17 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
     style OUT1 fill:#059669,stroke:#047857,color:#fff
       </div>
     </div>
@@ -420,8 +424,8 @@ graph LR
         DEP3["Input from Phase 4<br/>Market overview,<br/>competitive positioning"]
 
         S51["Step 5.1<br/>Distill top 3-5 investment<br/>highlights from Phases 2-4"]
-        S52["Step 5.2<br/>Define value creation thesis<br/><i>#36 EBITDA Bridge, #72 Synergy</i>"]
-        S53["Step 5.3<br/>Build upside case<br/><i>#53 Sensitivity, #34 Model</i>"]
+        S52["Step 5.2<br/>Define value creation thesis<br/><i>#38 EBITDA Bridge, #76 Synergy</i>"]
+        S53["Step 5.3<br/>Build upside case<br/><i>#56 Sensitivity, #36 Model</i>"]
         S54["Step 5.4<br/>Identify differentiated insights"]
         S55["Step 5.5<br/>Draft Investment Thesis section"]
 
@@ -460,9 +464,9 @@ graph LR
         DEP2["Input from Phase 7<br/>Litigation, regulatory,<br/>CoC triggers"]
 
         S61["Step 6.1<br/>Compile all prior-phase flags"]
-        S62["Step 6.2<br/>Review litigation, regulatory,<br/>environmental & tax risks<br/><i>#83, #94-104</i>"]
-        S63["Step 6.3<br/>Assess customer &<br/>revenue durability<br/><i>#54 Concentration, #55 Churn</i>"]
-        S64["Step 6.4<br/>Assess deal-specific risks<br/><i>#67 CoC, #68 Consent, #70 HSR</i>"]
+        S62["Step 6.2<br/>Review litigation, regulatory,<br/>environmental & tax risks<br/><i>#87, #98-108</i>"]
+        S63["Step 6.3<br/>Assess customer &<br/>revenue durability<br/><i>#57 Concentration, #58 Churn</i>"]
+        S64["Step 6.4<br/>Assess deal-specific risks<br/><i>#71 CoC, #72 Consent, #74 HSR</i>"]
         S65["Step 6.5<br/>Build Risk Factor Matrix<br/>(min 10-15 risks)"]
         S66["Step 6.6<br/>Build sensitivity analysis<br/>(-5%, -10% rev, margin, customer)"]
         S67["Step 6.7<br/>Draft Key Risks section"]
@@ -544,7 +548,7 @@ graph LR
       </div>
       <div class="info-box fin">
         <h4>Source Documents</h4>
-        <div class="value">#30-50, #54, #120-123</div>
+        <div class="value">#31-53, #55-56, #124-127</div>
         <div class="detail">Plus Phase 8 synergy outputs</div>
       </div>
       <div class="info-box fin">
@@ -563,26 +567,28 @@ graph TB
 
         DEP["Input: Phase 1 complete<br/>Financial Model received"]
 
-        S31["Step 3.1<br/>Compile historical financials<br/>(3-5yr IS, BS, CF)<br/><i>#30 Audited, #31 Interim</i>"]
-        S32["Step 3.2<br/>Revenue bridge &<br/>concentration analysis<br/><i>#33 Revenue Disagg, #54 Customer</i>"]
-        S33["Step 3.3<br/>Validate model &<br/>build EBITDA bridge<br/><i>#34 Model, #35 BvA, #36 EBITDA</i>"]
-        S34["Step 3.4<br/>Working capital analysis<br/><i>#37 WC, #38 AR, #39 AP, #40 Inv</i>"]
-        S35["Step 3.5<br/>Debt & covenant analysis<br/><i>#41 Debt, #42 Covenant, #44 Maturity</i>"]
-        S36["Step 3.6<br/>Capex & accounting review<br/><i>#43 Capex, #120 RevRec, #121 Impairment</i>"]
-        S37["Step 3.7<br/>Compile financial<br/>analysis package"]
+        S31["Step 3.1<br/>Compile historical financials<br/>(3-5yr IS, BS, CF)<br/><i>#31 Audited, #32 Interim</i>"]
+        S32["Step 3.2<br/>Quality of Earnings analysis<br/>& EBITDA reconciliation<br/><i>#34 QoE Report, #31 Audited</i>"]
+        S33["Step 3.3<br/>Revenue bridge &<br/>concentration analysis<br/><i>#35 Revenue Disagg, #55 Customer</i>"]
+        S34["Step 3.4<br/>Validate model &<br/>build EBITDA bridge<br/><i>#36 Model, #37 BvA, #38 EBITDA</i>"]
+        S35["Step 3.5<br/>Working capital analysis<br/><i>#39 WC, #40 AR, #41 AP, #42 Inv</i>"]
+        S36["Step 3.6<br/>Debt & covenant analysis<br/><i>#43 Debt, #44 Covenant, #46 Maturity</i>"]
+        S37["Step 3.7<br/>Capex & accounting review<br/><i>#45 Capex, #122 RevRec, #123 Impairment</i>"]
+        S38["Step 3.8<br/>Compile financial<br/>analysis package"]
 
         DEP --> S31
         S31 --> S32
-        S31 --> S34
         S31 --> S35
+        S31 --> S36
         S32 --> S33
-        S33 --> S37
-        S34 --> S37
-        S35 --> S37
-        S36 --> S37
-        S37 --> OUT3
+        S33 --> S34
+        S34 --> S38
+        S35 --> S38
+        S36 --> S38
+        S37 --> S38
+        S38 --> OUT3
 
-        OUT3(["Output:<br/>Historical Summary | LTM Build<br/>Revenue Bridge | EBITDA Bridge<br/>WC Analysis | Debt Schedule<br/>Capex Analysis | Model Audit"])
+        OUT3(["Output:<br/>Historical Summary | LTM Build<br/>QoE Reconciliation | Revenue Bridge<br/>EBITDA Bridge | WC Analysis<br/>Debt Schedule | Capex | Model Audit"])
     end
 
     HAND1["Handoff to Deal Leadership<br/>Phases 5 & 6"]
@@ -601,6 +607,7 @@ graph TB
     style S35 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
     style S36 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
     style S37 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style S38 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
     style OUT3 fill:#059669,stroke:#047857,color:#fff
     style HAND1 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
     style HAND2 fill:#FEF3C7,stroke:#D97706,color:#1e1e1e
@@ -621,33 +628,37 @@ graph TB
         DEP4["Input: Phase 7<br/>Diluted shares, 382"]
         DEP5["Input: Phase 8<br/>Synergy estimates"]
 
-        S91["Step 9.1<br/>Comparable companies<br/><i>#46 Comps</i>"]
-        S92["Step 9.2<br/>Precedent transactions<br/><i>#47 Precedents, #48 Premiums</i>"]
-        S93["Step 9.3<br/>DCF model<br/><i>#50 DCF, #34 Model</i>"]
-        S94["Step 9.4<br/>Valuation triangulation<br/>(football field)"]
-        S95["Step 9.5<br/>Returns analysis<br/>(IRR/MOIC: base/down/up)"]
-        S96["Step 9.6<br/>Premium analysis"]
-        S97["Step 9.7<br/>Sources & uses table"]
-        S98["Step 9.8<br/>Draft Valuation section"]
+        S91["Step 9.1<br/>Comparable companies<br/><i>#48 Comps</i>"]
+        S92["Step 9.2<br/>Precedent transactions<br/><i>#49 Precedents, #50 Premiums</i>"]
+        S93["Step 9.3<br/>DCF model<br/><i>#53 DCF, #36 Model</i>"]
+        S94["Step 9.4<br/>Historical stock price &<br/>trading analysis (VWAP)<br/><i>#52 Stock Price & Trading</i>"]
+        S95["Step 9.5<br/>Valuation triangulation<br/>(football field)"]
+        S96["Step 9.6<br/>Returns analysis<br/>(IRR/MOIC: base/down/up)"]
+        S97["Step 9.7<br/>Premium analysis<br/>(vs precedents & trading)"]
+        S98["Step 9.8<br/>Sources & uses table"]
+        S99["Step 9.9<br/>Draft Valuation section"]
 
         DEP1 --> S91
         DEP1 --> S92
         DEP1 --> S93
+        DEP1 --> S94
         DEP4 --> S93
-        DEP5 --> S95
-        S91 --> S94
-        S92 --> S94
-        S93 --> S94
+        DEP5 --> S96
+        S91 --> S95
+        S92 --> S95
+        S93 --> S95
         S94 --> S95
-        DEP2 --> S95
-        DEP3 --> S95
-        S94 --> S96
+        S94 --> S97
+        S95 --> S96
+        DEP2 --> S96
+        DEP3 --> S96
         S95 --> S97
         S96 --> S98
-        S97 --> S98
-        S98 --> OUT9
+        S97 --> S99
+        S98 --> S99
+        S99 --> OUT9
 
-        OUT9(["Output:<br/>Comps Table | Precedents Table<br/>DCF Summary | Football Field<br/>Returns (3 scenarios) | S&U"])
+        OUT9(["Output:<br/>Comps Table | Precedents Table<br/>DCF Summary | Trading Analysis<br/>Football Field | Returns (3 scenarios) | S&U"])
     end
 
     style DEP1 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
@@ -663,6 +674,7 @@ graph TB
     style S96 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
     style S97 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
     style S98 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
+    style S99 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
     style OUT9 fill:#059669,stroke:#047857,color:#fff
       </div>
     </div>
@@ -682,7 +694,7 @@ graph TB
       </div>
       <div class="info-box biz">
         <h4>Source Documents</h4>
-        <div class="value">#11-29, #33, #56</div>
+        <div class="value">#12-24, #35, #45</div>
         <div class="detail">Business ops, market & competitive</div>
       </div>
       <div class="info-box biz">
@@ -701,11 +713,11 @@ graph TB
 
         DEP["Input: Phase 1 complete"]
 
-        S21["Step 2.1<br/>Build brand/product matrix<br/><i>#11 Brand, #12 SKU, #33 Revenue</i>"]
-        S22["Step 2.2<br/>Analyze facilities &<br/>unit economics<br/><i>#13-15 Facility/Capacity/Cost, #43 Capex</i>"]
-        S23["Step 2.3<br/>Map supply chain<br/><i>#17 Suppliers, #18 Inputs</i>"]
-        S24["Step 2.4<br/>Map distribution network<br/><i>#19 Distribution, #20 Agreements</i>"]
-        S25["Step 2.5<br/>Review locations & QC<br/><i>#21 Location P&L, #22 Leases, #16 QC</i>"]
+        S21["Step 2.1<br/>Build brand/product matrix<br/><i>#12 Brand, #13 SKU, #35 Revenue</i>"]
+        S22["Step 2.2<br/>Analyze facilities &<br/>unit economics<br/><i>#14-16 Facility/Capacity/Cost, #45 Capex</i>"]
+        S23["Step 2.3<br/>Map supply chain<br/><i>#18 Suppliers, #19 Inputs</i>"]
+        S24["Step 2.4<br/>Map distribution network<br/><i>#20 Distribution, #21 Agreements</i>"]
+        S25["Step 2.5<br/>Review locations & QC<br/><i>#22 Location P&L, #23 Leases, #17 QC</i>"]
         S26["Step 2.6<br/>Draft Business Description<br/>(4-6 pages)"]
 
         DEP --> S21
@@ -751,9 +763,9 @@ graph TB
 
         DEP["Input: Phase 1 complete"]
 
-        S41["Step 4.1<br/>Extract market data<br/>(TAM, growth, drivers)<br/><i>#24 Industry, #25 Stats</i>"]
-        S42["Step 4.2<br/>Analyze competitive landscape<br/>(3-5 competitors profiled)<br/><i>#26 Competitors, #27 Share, #56 Bench</i>"]
-        S43["Step 4.3<br/>Consumer insights &<br/>emerging threats<br/><i>#28 Consumer, #29 Pipeline</i>"]
+        S41["Step 4.1<br/>Extract market data<br/>(TAM, growth, drivers)<br/><i>#25 Industry, #26 Stats</i>"]
+        S42["Step 4.2<br/>Analyze competitive landscape<br/>(3-5 competitors profiled)<br/><i>#27 Competitors, #28 Share, #59 Bench</i>"]
+        S43["Step 4.3<br/>Consumer insights &<br/>emerging threats<br/><i>#29 Consumer, #30 Pipeline</i>"]
         S44["Step 4.4<br/>Draft Industry & Market section<br/>(2-3 pages)"]
 
         DEP --> S41
@@ -791,7 +803,7 @@ graph TB
       </div>
       <div class="info-box legal">
         <h4>Source Documents</h4>
-        <div class="value">#58-71, #83-104</div>
+        <div class="value">#61-75, #87-108</div>
         <div class="detail">Deal docs, legal, regulatory, tax</div>
       </div>
       <div class="info-box legal">
@@ -810,34 +822,37 @@ graph TB
 
         DEP["Input: Phase 1 complete<br/>Deal documents received"]
 
-        S71["Step 7.1<br/>Fully diluted cap table<br/><i>#62 Cap Table, #63 Equity Plans, #64 Awards</i>"]
-        S72["Step 7.2<br/>Change-of-control matrix<br/><i>#67 CoC, #41 Debt, #20 Dist, #78 Employment</i>"]
-        S73["Step 7.3<br/>Consent & approval tracker<br/><i>#68 Consent Matrix</i>"]
-        S74["Step 7.4<br/>Board authorization &<br/>deal process review<br/><i>#58 Board, #59 Advisor, #60 Fairness, #61 LOIs</i>"]
-        S75["Step 7.5<br/>Shareholder agreement review<br/><i>#65 Shareholder, #66 Strategic Partner</i>"]
-        S76["Step 7.6<br/>280G golden parachute analysis<br/><i>#69 280G, #82 Severance</i>"]
-        S77["Step 7.7<br/>HSR/antitrust assessment<br/><i>#70 HSR</i>"]
-        S78["Step 7.8<br/>Section 382 NOL analysis<br/><i>#101 Section 382, #103 Excise</i>"]
-        S79["Step 7.9<br/>RWI pre-diligence report<br/><i>#71 RWI</i>"]
-        S710["Step 7.10<br/>Draft Deal Terms section"]
+        S71["Step 7.1<br/>Fully diluted cap table<br/><i>#65 Cap Table, #66 Equity Plans, #67 Awards</i>"]
+        S72["Step 7.2<br/>Shareholder base & cost basis<br/>analysis (13F data)<br/><i>#68 Shareholder/13F Data</i>"]
+        S73["Step 7.3<br/>Change-of-control matrix<br/><i>#70 CoC, #43 Debt, #21 Dist, #80 Employment</i>"]
+        S74["Step 7.4<br/>Consent & approval tracker<br/><i>#72 Consent Matrix</i>"]
+        S75["Step 7.5<br/>Board authorization &<br/>deal process review<br/><i>#61 Board, #62 Advisor, #63 Fairness, #64 LOIs</i>"]
+        S76["Step 7.6<br/>Shareholder agreement review<br/><i>#69 Shareholder Agreements</i>"]
+        S77["Step 7.7<br/>280G golden parachute analysis<br/><i>#73 280G, #84 Severance</i>"]
+        S78["Step 7.8<br/>HSR/antitrust assessment<br/><i>#74 HSR</i>"]
+        S79["Step 7.9<br/>Section 382 NOL analysis<br/><i>#103 Section 382, #105 Excise</i>"]
+        S710["Step 7.10<br/>RWI pre-diligence report<br/><i>#75 RWI</i>"]
+        S711["Step 7.11<br/>Draft Deal Terms section"]
 
         DEP --> S71
-        DEP --> S72
+        S71 --> S72
         DEP --> S73
         DEP --> S74
         DEP --> S75
-        S71 --> S710
-        S72 --> S710
-        S73 --> S710
-        S74 --> S710
-        S75 --> S710
-        S76 --> S710
-        S77 --> S710
-        S78 --> S710
-        S79 --> S710
-        S710 --> OUT7
+        DEP --> S76
+        S71 --> S711
+        S72 --> S711
+        S73 --> S711
+        S74 --> S711
+        S75 --> S711
+        S76 --> S711
+        S77 --> S711
+        S78 --> S711
+        S79 --> S711
+        S710 --> S711
+        S711 --> OUT7
 
-        OUT7(["Output:<br/>Cap Table Build | CoC Matrix<br/>Consent Tracker | Deal Process<br/>280G & 382 Impact | HSR Timeline"])
+        OUT7(["Output:<br/>Cap Table Build | 13F Analysis<br/>CoC Matrix | Consent Tracker<br/>Deal Process | 280G & 382 Impact<br/>HSR Timeline"])
     end
 
     HAND1["Handoff to Financial Analysis<br/>Phase 9: Diluted shares, 382 NOL"]
@@ -857,6 +872,7 @@ graph TB
     style S78 fill:#EDE9FE,stroke:#7C3AED,color:#1e1e1e
     style S79 fill:#EDE9FE,stroke:#7C3AED,color:#1e1e1e
     style S710 fill:#EDE9FE,stroke:#7C3AED,color:#1e1e1e
+    style S711 fill:#EDE9FE,stroke:#7C3AED,color:#1e1e1e
     style OUT7 fill:#059669,stroke:#047857,color:#fff
     style HAND1 fill:#DBEAFE,stroke:#2563EB,color:#1e1e1e
     style HAND2 fill:#FEE2E2,stroke:#DC2626,color:#1e1e1e
@@ -878,7 +894,7 @@ graph TB
       </div>
       <div class="info-box syn">
         <h4>Source Documents</h4>
-        <div class="value">#72-82, #111, #117</div>
+        <div class="value">#76-86, #115, #121</div>
         <div class="detail">Synergy, integration, HR, IT</div>
       </div>
       <div class="info-box syn">
@@ -898,12 +914,12 @@ graph TB
         DEP1["Input from Phase 2<br/>Facility ops, headcount, IT inventory"]
         DEP2["Input from Phase 3<br/>Cost structure, WC baseline, capex"]
 
-        S81["Step 8.1<br/>Categorize & quantify synergies<br/>(cost + revenue, confidence-weighted)<br/><i>#72 Synergy Analysis</i>"]
+        S81["Step 8.1<br/>Categorize & quantify synergies<br/>(cost + revenue, confidence-weighted)<br/><i>#76 Synergy Analysis</i>"]
         S82["Step 8.2<br/>Estimate one-time costs<br/>to achieve synergies"]
-        S83["Step 8.3<br/>Review prior acquisition<br/>integration performance<br/><i>#74 Integration Reports, #117 Prior Acq</i>"]
-        S84["Step 8.4<br/>Outline integration plan<br/>(Day 1, 30/60/90, Year 1)<br/><i>#73 Integration Playbook</i>"]
-        S85["Step 8.5<br/>People & org integration<br/><i>#76-82 People/Key Man/Employment/Comp</i>"]
-        S86["Step 8.6<br/>IT systems integration<br/><i>#75 IT Assessment, #111 IT Overview</i>"]
+        S83["Step 8.3<br/>Review prior acquisition<br/>integration performance<br/><i>#78 Integration Reports, #121 Prior Acq</i>"]
+        S84["Step 8.4<br/>Outline integration plan<br/>(Day 1, 30/60/90, Year 1)<br/><i>#77 Integration Playbook</i>"]
+        S85["Step 8.5<br/>People & org integration<br/><i>#80-86 People/Key Man/Employment/Comp</i>"]
+        S86["Step 8.6<br/>IT systems integration<br/><i>#79 IT Assessment, #115 IT Overview</i>"]
         S87["Step 8.7<br/>Draft Synergies & Integration<br/>section with waterfall"]
 
         DEP1 --> S81
@@ -1049,10 +1065,10 @@ gantt
     <div class="chart-card">
       <h3>Document Priority Distribution</h3>
       <div class="mermaid">
-pie title Source Documents by Priority Level
-    "Critical (39)" : 39
-    "High (50)" : 50
-    "Medium (36)" : 36
+pie title Source Documents by Priority Level (129 Total)
+    "Critical (45)" : 45
+    "High (62)" : 62
+    "Medium (22)" : 22
       </div>
     </div>
   </div>
@@ -1060,7 +1076,7 @@ pie title Source Documents by Priority Level
 </div>
 
 <div class="footer">
-  <p>IC Memo Build Workflow Charts &bull; Version 2.0 &bull; February 2026</p>
+  <p>IC Memo Build Workflow Charts &bull; Version 3.0 &bull; February 2026</p>
   <p>Generated from IC Memo Build Guide &amp; Production Playbook</p>
 </div>
 
