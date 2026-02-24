@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IC Memo Workflow Charts v2 — LLM Capability Assessment</title>
+  <title>IC Memo Workflow Charts v3 — LLM Capability Assessment</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js"></script>
   <style>
     :root {
@@ -14,17 +14,28 @@
       --border: #E2E8F0;
       --text: #334155;
       --muted: #64748B;
-      --green: #16A34A;
-      --green-light: #DCFCE7;
-      --green-border: #16A34A;
-      --yellow: #CA8A04;
-      --yellow-light: #FEF9C3;
-      --yellow-border: #CA8A04;
-      --red: #DC2626;
-      --red-light: #FEE2E2;
-      --red-border: #DC2626;
+      --green: #2E7D32;
+      --green-light: #E8F5E9;
+      --green-border: #4CAF50;
+      --amber: #F57F17;
+      --amber-light: #FFF8E1;
+      --amber-border: #FF9800;
+      --red: #C62828;
+      --red-light: #FFEBEE;
+      --red-border: #F44336;
       --grey: #6B7280;
       --grey-light: #F3F4F6;
+      /* Team colours */
+      --deal-blue: #3B82F6;
+      --deal-bg: #EBF2FE;
+      --fin-teal: #10B981;
+      --fin-bg: #E6F9F3;
+      --legal-gold: #F59E0B;
+      --legal-bg: #FEF6E6;
+      --bizops-purple: #8B5CF6;
+      --bizops-bg: #F1EBFE;
+      --synergy-pink: #EC4899;
+      --synergy-bg: #FDEDF5;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -54,6 +65,27 @@
       font-size: 0.8rem;
       margin-bottom: 0.5rem;
     }
+
+    /* G/A/R percentage bar in header */
+    .gar-bar {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin: 0.75rem auto 0.25rem;
+      max-width: 500px;
+      border-radius: 8px;
+      overflow: hidden;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .gar-bar .gar-seg {
+      padding: 0.4rem 0.6rem;
+      text-align: center;
+      color: white;
+    }
+    .gar-bar .gar-green { background: var(--green); flex: 42; }
+    .gar-bar .gar-amber { background: var(--amber); flex: 50; color: #1a1a1a; }
+    .gar-bar .gar-red { background: var(--red); flex: 8; }
 
     .nav-container {
       background: white;
@@ -150,7 +182,7 @@
       border: 2px solid;
     }
     .legend-color.green { background: var(--green-light); border-color: var(--green-border); }
-    .legend-color.yellow { background: var(--yellow-light); border-color: var(--yellow-border); }
+    .legend-color.amber { background: var(--amber-light); border-color: var(--amber-border); }
     .legend-color.red { background: var(--red-light); border-color: var(--red-border); }
     .legend-color.diamond {
       background: var(--grey-light);
@@ -174,7 +206,7 @@
       border-left: 4px solid var(--secondary);
     }
     .info-box.green-stat { border-left-color: var(--green); }
-    .info-box.yellow-stat { border-left-color: var(--yellow); }
+    .info-box.amber-stat { border-left-color: var(--amber); }
     .info-box.red-stat { border-left-color: var(--red); }
     .info-box h4 { font-size: 0.8rem; color: var(--muted); margin-bottom: 0.25rem; text-transform: uppercase; letter-spacing: 0.05em; }
     .info-box .value { font-size: 1.4rem; font-weight: 700; color: var(--primary); }
@@ -192,6 +224,22 @@
       margin-top: 2rem;
     }
 
+    /* Team badge for section headers */
+    .team-badge {
+      display: inline-block;
+      padding: 0.15rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+    }
+    .team-badge.deal { background: var(--deal-bg); color: var(--deal-blue); }
+    .team-badge.fin { background: var(--fin-bg); color: var(--fin-teal); }
+    .team-badge.legal { background: var(--legal-bg); color: var(--legal-gold); }
+    .team-badge.bizops { background: var(--bizops-bg); color: var(--bizops-purple); }
+    .team-badge.synergy { background: var(--synergy-bg); color: var(--synergy-pink); }
+
     @media print {
       .nav-container { display: none; }
       .chart-section { display: block !important; page-break-before: always; }
@@ -208,10 +256,15 @@
 <body>
 
 <div class="header">
-  <div class="version-badge">v2.0 — LLM Capability Assessment</div>
+  <div class="version-badge">v3.0 — Aligned with Build Guide v4</div>
   <h1>IC Memo Workflow Charts</h1>
-  <div class="subtitle">Which steps can an LLM automate today, potentially tomorrow, or never?</div>
-  <p>Green = LLM Can Do &bull; Yellow = Maybe Future &bull; Red = Cannot Do (Human Required) &bull; February 2026</p>
+  <div class="subtitle">66 Steps &bull; 10 Phases &bull; 5 Teams &bull; LLM Capability Assessment</div>
+  <div class="gar-bar">
+    <div class="gar-seg gar-green">Autonomous 42%</div>
+    <div class="gar-seg gar-amber">Assisted 50%</div>
+    <div class="gar-seg gar-red">Manual 8%</div>
+  </div>
+  <p style="margin-top:0.4rem;">Green = Autonomous (28 steps) &bull; Amber = Assisted (33 steps) &bull; Red = Manual (5 steps) &bull; February 2026</p>
 </div>
 
 <div class="nav-container">
@@ -232,32 +285,32 @@
   <div class="chart-section active" id="overall">
     <div class="section-header">
       <h2>Master Build Sequence — LLM Capability Overlay</h2>
-      <p>Each phase is colour-coded by the degree to which an LLM can automate it today. Diamonds represent decision gates that require human judgment or external sign-off.</p>
+      <p>Each phase is colour-coded by the predominant LLM capability level. Diamonds represent decision gates (checkpoints) that require human judgment or external sign-off. 66 steps across 10 phases, 10 checkpoints, 8 handoffs.</p>
     </div>
 
     <div class="legend">
       <span class="legend-title">Legend:</span>
-      <div class="legend-item"><div class="legend-color green"></div>LLM Can Do Today</div>
-      <div class="legend-item"><div class="legend-color yellow"></div>Maybe Future Capability</div>
-      <div class="legend-item"><div class="legend-color red"></div>Cannot Do (Human Required)</div>
-      <div class="legend-item"><div class="legend-color diamond"></div>Decision / Gate</div>
+      <div class="legend-item"><div class="legend-color green"></div>Autonomous (LLM end-to-end)</div>
+      <div class="legend-item"><div class="legend-color amber"></div>Assisted (LLM + human review)</div>
+      <div class="legend-item"><div class="legend-color red"></div>Manual (human required)</div>
+      <div class="legend-item"><div class="legend-color diamond"></div>Checkpoint / Gate</div>
     </div>
 
     <div class="info-grid">
       <div class="info-box green-stat">
-        <h4>LLM Can Do</h4>
-        <div class="value">~55%</div>
-        <div class="detail">Data extraction, drafting, analysis, modelling</div>
+        <h4>Autonomous</h4>
+        <div class="value">28 steps (42%)</div>
+        <div class="detail">Data extraction, structuring, comps, modelling, sensitivity analysis</div>
       </div>
-      <div class="info-box yellow-stat">
-        <h4>Maybe Future</h4>
-        <div class="value">~25%</div>
-        <div class="detail">Complex judgment, nuanced legal/tax, QoE</div>
+      <div class="info-box amber-stat">
+        <h4>Assisted</h4>
+        <div class="value">33 steps (50%)</div>
+        <div class="detail">QoE, narrative drafting, thesis, risk assessment, legal interpretation</div>
       </div>
       <div class="info-box red-stat">
-        <h4>Cannot Do</h4>
-        <div class="value">~20%</div>
-        <div class="detail">External sign-off, IC approval, senior review</div>
+        <h4>Manual</h4>
+        <div class="value">5 steps (8%)</div>
+        <div class="detail">IC recommendation, 280G/HSR, people integration, differentiated insights</div>
       </div>
     </div>
 
@@ -269,21 +322,21 @@ graph TD
 
     subgraph FOUNDATION ["FOUNDATION PHASES (Sequential)"]
         direction TB
-        P1["Phase 1: Transaction Overview<br/><b>Mostly LLM-automatable</b><br/>0.5 day"]:::greenNode
-        P1 --> CP1{"Checkpoint 1<br/>CIM verified?<br/>Timeline set?"}:::decisionNode
-        CP1 -->|Yes| P2["Phase 2: Business Description<br/><b>Mostly LLM-automatable</b><br/>1-2 days"]:::greenNode
-        CP1 -->|Yes| P3["Phase 3: Financial Foundation<br/><b>Partial LLM + human QoE</b><br/>2-3 days"]:::yellowNode
-        P2 --> CP2{"Checkpoint 2<br/>Brands profiled?<br/>Ops mapped?"}:::decisionNode
-        P3 --> CP3{"Checkpoint 3<br/>EBITDA reconciled?<br/>Model audited?"}:::decisionNode
+        P1["Phase 1: Transaction Overview<br/><b>4A / 3H — mostly autonomous</b><br/>0.5 day"]:::greenNode
+        P1 --> CP1{"CP 1: CIM verified?<br/>Structure mapped?<br/>Timeline set?"}:::decisionNode
+        CP1 -->|Yes| P2["Phase 2: Business Description<br/><b>5A / 1H — mostly autonomous</b><br/>1-2 days"]:::greenNode
+        CP1 -->|Yes| P3["Phase 3: Financial Foundation<br/><b>4A / 4H — evenly split</b><br/>2-3 days"]:::amberNode
+        P2 --> CP2{"CP 2: Brands profiled?<br/>Ops mapped?"}:::decisionNode
+        P3 --> CP3{"CP 3: EBITDA reconciled?<br/>Model audited?"}:::decisionNode
     end
 
     subgraph PARALLEL ["PARALLEL PHASES (Concurrent)"]
         direction TB
-        P4["Phase 4: Industry & Market<br/><b>LLM-automatable</b><br/>1 day"]:::greenNode
-        P5["Phase 5: Investment Thesis<br/><b>Partial — needs deal judgment</b><br/>1 day"]:::yellowNode
-        P6["Phase 6: Key Risks<br/><b>Partial — needs deal judgment</b><br/>1 day"]:::yellowNode
-        P7["Phase 7: Deal Terms & Structure<br/><b>Mixed — legal sign-off needed</b><br/>1-2 days"]:::yellowNode
-        P8["Phase 8: Synergies & Integration<br/><b>Partial — needs ops judgment</b><br/>1-2 days"]:::yellowNode
+        P4["Phase 4: Industry & Market<br/><b>1A / 3H — mostly assisted</b><br/>1 day"]:::amberNode
+        P5["Phase 5: Investment Thesis<br/><b>0A / 3H / 1E — assisted + manual</b><br/>1 day"]:::amberNode
+        P6["Phase 6: Key Risks<br/><b>3A / 3H — evenly split</b><br/>1 day"]:::amberNode
+        P7["Phase 7: Deal Terms & Structure<br/><b>4A / 6H / 2E — mixed</b><br/>1-2 days"]:::amberNode
+        P8["Phase 8: Synergies & Integration<br/><b>1A / 5H / 1E — mostly assisted</b><br/>1-2 days"]:::amberNode
     end
 
     CP1 -->|Yes| P4
@@ -296,18 +349,18 @@ graph TD
     CP3 -->|Yes| P8
     CP3 -->|Yes| P9
 
-    P4 --> CP4{"Market sized?<br/>Comps profiled?"}:::decisionNode
-    P5 --> CP5{"Thesis quantified?"}:::decisionNode
-    P6 --> CP6{"Risk matrix done?"}:::decisionNode
-    P7 --> CP7{"Cap table verified?<br/>Consents tracked?"}:::decisionNode
-    P8 --> CP8{"Synergies quantified?"}:::decisionNode
+    P4 --> CP4{"CP 4: Market sized?<br/>Comps profiled?"}:::decisionNode
+    P5 --> CP5{"CP 5: Thesis quantified?"}:::decisionNode
+    P6 --> CP6{"CP 6: Risk matrix done?"}:::decisionNode
+    P7 --> CP7{"CP 7: Cap table verified?<br/>Consents tracked?"}:::decisionNode
+    P8 --> CP8{"CP 8: Synergies quantified?"}:::decisionNode
 
     subgraph INTEGRATION ["INTEGRATION PHASES"]
         direction TB
-        P9["Phase 9: Valuation & Returns<br/><b>Mostly LLM-automatable</b><br/>2-3 days"]:::greenNode
-        P9 --> CP9{"Valuation triangulated?<br/>Returns modelled?"}:::decisionNode
-        CP9 -->|Yes| P10["Phase 10: Recommendation<br/><b>Human required — IC sign-off</b><br/>1 day"]:::redNode
-        P10 --> CP10{"Numbers consistent?<br/>Sources traced?"}:::decisionNode
+        P9["Phase 9: Valuation & Returns<br/><b>6A / 3H — mostly autonomous</b><br/>2-3 days"]:::greenNode
+        P9 --> CP9{"CP 9: Valuation triangulated?<br/>Returns modelled?"}:::decisionNode
+        CP9 -->|Yes| P10["Phase 10: Recommendation<br/><b>0A / 2H / 1E — manual + assisted</b><br/>1 day"]:::redNode
+        P10 --> CP10{"FINAL: Numbers consistent?<br/>Sources traced?"}:::decisionNode
     end
 
     CP5 -->|Yes| P9
@@ -316,9 +369,9 @@ graph TD
     CP7 -->|Yes| P9
     CP10 -->|Approved| DONE(["IC Memo Complete<br/>Ready for Distribution"]):::redNode
 
-    classDef greenNode fill:#DCFCE7,stroke:#16A34A,color:#14532D,stroke-width:2px
-    classDef yellowNode fill:#FEF9C3,stroke:#CA8A04,color:#713F12,stroke-width:2px
-    classDef redNode fill:#FEE2E2,stroke:#DC2626,color:#7F1D1D,stroke-width:2px
+    classDef greenNode fill:#E8F5E9,stroke:#4CAF50,color:#1B5E20,stroke-width:2px
+    classDef amberNode fill:#FFF8E1,stroke:#FF9800,color:#E65100,stroke-width:2px
+    classDef redNode fill:#FFEBEE,stroke:#F44336,color:#B71C1C,stroke-width:2px
     classDef decisionNode fill:#F3F4F6,stroke:#6B7280,color:#374151,stroke-width:2px
       </div>
     </div>
@@ -327,33 +380,33 @@ graph TD
   <!-- ==================== DEAL LEADERSHIP ==================== -->
   <div class="chart-section" id="deal-lead">
     <div class="section-header">
-      <h2>Deal Leadership — LLM Capability Assessment</h2>
-      <p>Phases 1, 5, 6, 10. Phase 1 is heavily automatable (data extraction). Phases 5 & 6 need deal-specific judgment. Phase 10 is human-only (IC sign-off).</p>
+      <h2>Deal Leadership <span class="team-badge deal">Phases 1, 5, 6, 10</span></h2>
+      <p>Phase 1 is mostly autonomous (data extraction). Phases 5 & 6 are evenly split (need deal judgment). Phase 10 is manual/assisted (IC sign-off, senior review).</p>
     </div>
 
     <div class="legend">
       <span class="legend-title">Legend:</span>
-      <div class="legend-item"><div class="legend-color green"></div>LLM Can Do Today</div>
-      <div class="legend-item"><div class="legend-color yellow"></div>Maybe Future</div>
-      <div class="legend-item"><div class="legend-color red"></div>Cannot Do</div>
-      <div class="legend-item"><div class="legend-color diamond"></div>Decision</div>
+      <div class="legend-item"><div class="legend-color green"></div>Autonomous</div>
+      <div class="legend-item"><div class="legend-color amber"></div>Assisted</div>
+      <div class="legend-item"><div class="legend-color red"></div>Manual</div>
+      <div class="legend-item"><div class="legend-color diamond"></div>Checkpoint</div>
     </div>
 
     <div class="chart-card">
-      <h3>Phase 1: Transaction Overview</h3>
+      <h3>Phase 1: Transaction Overview (7 steps &mdash; 4A / 3H)</h3>
       <div class="mermaid">
 graph TB
     subgraph P1 ["Phase 1: Transaction Overview — Deal Leadership — 0.5 day"]
         direction TB
 
         S11["Step 1.1<br/>Extract company & deal profile<br/>from CIM"]:::greenNode
-        S12["Step 1.2<br/>Review Management Presentation<br/>(extract key data & analysis)"]:::greenNode
+        S12["Step 1.2<br/>Review Management Presentation<br/>(buy-side analysis)"]:::amberNode
         S13["Step 1.3<br/>Map corporate structure<br/>from org chart & subsidiaries"]:::greenNode
         S14["Step 1.4<br/>Understand process & timeline<br/>(extract from process letter)"]:::greenNode
-        S15["Step 1.5<br/>Cross-reference KPIs<br/>from dashboard"]:::greenNode
-        S16["Step 1.6<br/>Review NDA & corporate docs"]:::yellowNode
+        S15["Step 1.5<br/>Cross-reference KPIs<br/>against CIM claims"]:::greenNode
+        S16["Step 1.6<br/>Review NDA & corporate docs"]:::amberNode
         D1{"NDA terms<br/>acceptable?"}:::decisionNode
-        S17["Step 1.7<br/>Draft Transaction Overview"]:::greenNode
+        S17["Step 1.7<br/>Draft Transaction Overview"]:::amberNode
 
         S11 --> S12
         S11 --> S13
@@ -367,30 +420,29 @@ graph TB
         S17 --> OUT1(["Output: Transaction Summary<br/>Org Chart, Timeline, Narrative"]):::greenNode
     end
 
-    classDef greenNode fill:#DCFCE7,stroke:#16A34A,color:#14532D,stroke-width:2px
-    classDef yellowNode fill:#FEF9C3,stroke:#CA8A04,color:#713F12,stroke-width:2px
-    classDef redNode fill:#FEE2E2,stroke:#DC2626,color:#7F1D1D,stroke-width:2px
+    classDef greenNode fill:#E8F5E9,stroke:#4CAF50,color:#1B5E20,stroke-width:2px
+    classDef amberNode fill:#FFF8E1,stroke:#FF9800,color:#E65100,stroke-width:2px
+    classDef redNode fill:#FFEBEE,stroke:#F44336,color:#B71C1C,stroke-width:2px
     classDef decisionNode fill:#F3F4F6,stroke:#6B7280,color:#374151,stroke-width:2px
       </div>
     </div>
 
     <div class="chart-card">
-      <h3>Phase 5: Investment Thesis &amp; Upside Case</h3>
+      <h3>Phase 5: Investment Thesis &amp; Upside Case (4 steps &mdash; 3H / 1E)</h3>
       <div class="mermaid">
 graph TB
     subgraph P5 ["Phase 5: Investment Thesis — Deal Leadership — 1 day"]
         direction TB
 
         DEP1["Input from Phase 2<br/>Brand matrix, facility data"]:::greenNode
-        DEP2["Input from Phase 3<br/>EBITDA bridge, model audit"]:::yellowNode
-        DEP3["Input from Phase 4<br/>Market overview, comps"]:::greenNode
+        DEP2["Input from Phase 3<br/>EBITDA bridge, model audit"]:::amberNode
+        DEP3["Input from Phase 4<br/>Market overview, comps"]:::amberNode
 
-        S51["Step 5.1<br/>Distill top 3-5 investment<br/>highlights from Phases 2-4"]:::greenNode
-        S52["Step 5.2<br/>Define value creation thesis"]:::yellowNode
+        S51["Step 5.1<br/>Distill top 3-5 investment<br/>highlights from Phases 2-4"]:::amberNode
+        S52["Step 5.2<br/>Define value creation thesis"]:::amberNode
         D52{"Thesis aligned<br/>with deal rationale?"}:::decisionNode
-        S53["Step 5.3<br/>Build upside case<br/>(sensitivity & model)"]:::greenNode
-        S54["Step 5.4<br/>Identify differentiated insights<br/>(requires deal experience)"]:::redNode
-        S55["Step 5.5<br/>Draft Investment Thesis section"]:::greenNode
+        S53["Step 5.3<br/>Build upside case<br/>(quantified scenarios)"]:::amberNode
+        S54["Step 5.4<br/>Identify differentiated insights<br/>(requires deal intuition)"]:::redNode
 
         DEP1 --> S51
         DEP2 --> S51
@@ -399,35 +451,33 @@ graph TB
         S52 --> D52
         D52 -->|Yes| S53
         S53 --> S54
-        S54 --> S55
-        S55 --> OUT5(["Output: Thesis Statement<br/>Highlights, Value Bridge, Upside"]):::greenNode
+        S54 --> OUT5(["Output: Thesis Statement<br/>Highlights, Value Bridge, Upside"]):::amberNode
     end
 
-    classDef greenNode fill:#DCFCE7,stroke:#16A34A,color:#14532D,stroke-width:2px
-    classDef yellowNode fill:#FEF9C3,stroke:#CA8A04,color:#713F12,stroke-width:2px
-    classDef redNode fill:#FEE2E2,stroke:#DC2626,color:#7F1D1D,stroke-width:2px
+    classDef greenNode fill:#E8F5E9,stroke:#4CAF50,color:#1B5E20,stroke-width:2px
+    classDef amberNode fill:#FFF8E1,stroke:#FF9800,color:#E65100,stroke-width:2px
+    classDef redNode fill:#FFEBEE,stroke:#F44336,color:#B71C1C,stroke-width:2px
     classDef decisionNode fill:#F3F4F6,stroke:#6B7280,color:#374151,stroke-width:2px
       </div>
     </div>
 
     <div class="chart-card">
-      <h3>Phase 6: Key Risks</h3>
+      <h3>Phase 6: Key Risks (6 steps &mdash; 3A / 3H)</h3>
       <div class="mermaid">
 graph TB
     subgraph P6 ["Phase 6: Key Risks — Deal Leadership — 1 day"]
         direction TB
 
         DEP1["Input from Phases 2-5<br/>All flags from prior phases"]:::greenNode
-        DEP2["Input from Phase 7<br/>Litigation, regulatory, CoC"]:::yellowNode
+        DEP2["Input from Phase 7<br/>Litigation, regulatory, CoC"]:::amberNode
 
         S61["Step 6.1<br/>Compile all prior-phase flags"]:::greenNode
-        S62["Step 6.2<br/>Review litigation, regulatory,<br/>environmental & tax risks"]:::yellowNode
-        S63["Step 6.3<br/>Assess customer &<br/>revenue durability"]:::greenNode
-        S64["Step 6.4<br/>Assess deal-specific risks<br/>(CoC, consent, HSR)"]:::yellowNode
-        S65["Step 6.5<br/>Build Risk Factor Matrix<br/>(min 10-15 risks)"]:::greenNode
+        S62["Step 6.2<br/>Review litigation, regulatory,<br/>environmental & tax risks"]:::amberNode
+        S63["Step 6.3<br/>Assess customer &<br/>revenue durability risks"]:::greenNode
+        S64["Step 6.4<br/>Assess deal-specific risks<br/>(antitrust, CoC, consents)"]:::amberNode
+        S65["Step 6.5<br/>Build Risk Factor Matrix<br/>(min 10-15 risks)"]:::amberNode
         D65{"All material risks<br/>identified & ranked?"}:::decisionNode
         S66["Step 6.6<br/>Build sensitivity analysis<br/>(-5%, -10% scenarios)"]:::greenNode
-        S67["Step 6.7<br/>Draft Key Risks section"]:::greenNode
 
         DEP1 --> S61
         DEP2 --> S62
@@ -437,19 +487,18 @@ graph TB
         S64 --> S65
         S65 --> D65
         D65 -->|Yes| S66
-        S66 --> S67
-        S67 --> OUT6(["Output: Risk Matrix<br/>Top 5 Deep-Dives, Sensitivities"]):::greenNode
+        S66 --> OUT6(["Output: Risk Matrix<br/>Top 5 Deep-Dives, Sensitivities"]):::greenNode
     end
 
-    classDef greenNode fill:#DCFCE7,stroke:#16A34A,color:#14532D,stroke-width:2px
-    classDef yellowNode fill:#FEF9C3,stroke:#CA8A04,color:#713F12,stroke-width:2px
-    classDef redNode fill:#FEE2E2,stroke:#DC2626,color:#7F1D1D,stroke-width:2px
+    classDef greenNode fill:#E8F5E9,stroke:#4CAF50,color:#1B5E20,stroke-width:2px
+    classDef amberNode fill:#FFF8E1,stroke:#FF9800,color:#E65100,stroke-width:2px
+    classDef redNode fill:#FFEBEE,stroke:#F44336,color:#B71C1C,stroke-width:2px
     classDef decisionNode fill:#F3F4F6,stroke:#6B7280,color:#374151,stroke-width:2px
       </div>
     </div>
 
     <div class="chart-card">
-      <h3>Phase 10: Recommendation &amp; Final Assembly</h3>
+      <h3>Phase 10: Recommendation &amp; Final Assembly (3 steps &mdash; 2H / 1E)</h3>
       <div class="mermaid">
 graph TB
     subgraph P10 ["Phase 10: Recommendation & Assembly — Deal Leadership — 1 day"]
@@ -459,26 +508,21 @@ graph TB
 
         S101["Step 10.1<br/>Draft recommendation:<br/>Proceed / Conditions / Do Not Proceed"]:::redNode
         D101{"Deal Lead / MD<br/>approves recommendation?"}:::decisionNode
-        S102["Step 10.2<br/>Write Executive Summary<br/>(1-2 pages, standalone)"]:::yellowNode
-        S103["Step 10.3<br/>Compile Appendix<br/>(all exhibits, numbered)"]:::greenNode
-        S104["Step 10.4<br/>Full document review:<br/>consistency & traceability"]:::yellowNode
-        D104{"Numbers consistent?<br/>No contradictions?"}:::decisionNode
-        S105["Step 10.5<br/>Senior review &<br/>MD / Partner sign-off"]:::redNode
+        S102["Step 10.2<br/>Write Executive Summary<br/>(1-2 pages, standalone)"]:::amberNode
+        S103["Step 10.3<br/>Final document assembly<br/>& validation"]:::amberNode
+        D103{"Numbers consistent?<br/>No contradictions?"}:::decisionNode
 
         ALL --> S101
         S101 --> D101
         D101 -->|Yes| S102
-        ALL --> S103
-        S102 --> S104
-        S103 --> S104
-        S104 --> D104
-        D104 -->|Yes| S105
-        S105 --> DONE(["IC MEMO COMPLETE<br/>Ready for IC Distribution"]):::redNode
+        S102 --> S103
+        S103 --> D103
+        D103 -->|Approved| DONE(["IC MEMO COMPLETE<br/>Ready for IC Distribution"]):::redNode
     end
 
-    classDef greenNode fill:#DCFCE7,stroke:#16A34A,color:#14532D,stroke-width:2px
-    classDef yellowNode fill:#FEF9C3,stroke:#CA8A04,color:#713F12,stroke-width:2px
-    classDef redNode fill:#FEE2E2,stroke:#DC2626,color:#7F1D1D,stroke-width:2px
+    classDef greenNode fill:#E8F5E9,stroke:#4CAF50,color:#1B5E20,stroke-width:2px
+    classDef amberNode fill:#FFF8E1,stroke:#FF9800,color:#E65100,stroke-width:2px
+    classDef redNode fill:#FFEBEE,stroke:#F44336,color:#B71C1C,stroke-width:2px
     classDef decisionNode fill:#F3F4F6,stroke:#6B7280,color:#374151,stroke-width:2px
       </div>
     </div>
@@ -487,20 +531,20 @@ graph TB
   <!-- ==================== FINANCIAL ANALYSIS ==================== -->
   <div class="chart-section" id="financial">
     <div class="section-header">
-      <h2>Financial Analysis — LLM Capability Assessment</h2>
-      <p>Phases 3 &amp; 9. Data extraction and modelling are highly automatable. QoE reconciliation and complex judgment calls are yellow. Model sign-off is red.</p>
+      <h2>Financial Analysis <span class="team-badge fin">Phases 3, 9</span></h2>
+      <p>Phase 3: data extraction is autonomous, QoE and model validation are assisted. Phase 9: comps, precedents, and returns are autonomous; DCF and triangulation are assisted.</p>
     </div>
 
     <div class="legend">
       <span class="legend-title">Legend:</span>
-      <div class="legend-item"><div class="legend-color green"></div>LLM Can Do Today</div>
-      <div class="legend-item"><div class="legend-color yellow"></div>Maybe Future</div>
-      <div class="legend-item"><div class="legend-color red"></div>Cannot Do</div>
-      <div class="legend-item"><div class="legend-color diamond"></div>Decision</div>
+      <div class="legend-item"><div class="legend-color green"></div>Autonomous</div>
+      <div class="legend-item"><div class="legend-color amber"></div>Assisted</div>
+      <div class="legend-item"><div class="legend-color red"></div>Manual</div>
+      <div class="legend-item"><div class="legend-color diamond"></div>Checkpoint</div>
     </div>
 
     <div class="chart-card">
-      <h3>Phase 3: Financial Foundation</h3>
+      <h3>Phase 3: Financial Foundation (8 steps &mdash; 4A / 4H)</h3>
       <div class="mermaid">
 graph TB
     subgraph P3 ["Phase 3: Financial Foundation — Financial Analysis — 2-3 days"]
@@ -508,16 +552,16 @@ graph TB
 
         DEP["Input: Phase 1 complete<br/>Financial Model received"]:::greenNode
 
-        S31["Step 3.1<br/>Compile historical financials<br/>(3-5yr IS, BS, CF)"]:::greenNode
-        S32["Step 3.2<br/>Quality of Earnings analysis<br/>& EBITDA reconciliation"]:::yellowNode
+        S31["Step 3.1<br/>Compile historical financials<br/>(3-5yr IS, BS, CF, LTM)"]:::greenNode
+        S32["Step 3.2<br/>Quality of Earnings analysis<br/>& EBITDA reconciliation"]:::amberNode
         D32{"QoE adjustments<br/>reconcile to audited<br/>financials?"}:::decisionNode
         S33["Step 3.3<br/>Revenue bridge &<br/>concentration analysis"]:::greenNode
-        S34["Step 3.4<br/>Validate model &<br/>build EBITDA bridge"]:::yellowNode
+        S34["Step 3.4<br/>Validate model &<br/>build EBITDA bridge"]:::amberNode
         D34{"Model ties to<br/>audited numbers?"}:::decisionNode
         S35["Step 3.5<br/>Working capital analysis"]:::greenNode
         S36["Step 3.6<br/>Debt & covenant analysis"]:::greenNode
-        S37["Step 3.7<br/>Capex & accounting review"]:::yellowNode
-        S38["Step 3.8<br/>Compile financial<br/>analysis package"]:::greenNode
+        S37["Step 3.7<br/>Capex split (maint vs growth)<br/>& accounting review"]:::amberNode
+        S38["Step 3.8<br/>Compile financial<br/>analysis package"]:::amberNode
 
         DEP --> S31
         S31 --> S32
@@ -534,36 +578,36 @@ graph TB
         S38 --> OUT3(["Output: Historical Summary<br/>QoE, EBITDA Bridge, WC, Debt"]):::greenNode
     end
 
-    classDef greenNode fill:#DCFCE7,stroke:#16A34A,color:#14532D,stroke-width:2px
-    classDef yellowNode fill:#FEF9C3,stroke:#CA8A04,color:#713F12,stroke-width:2px
-    classDef redNode fill:#FEE2E2,stroke:#DC2626,color:#7F1D1D,stroke-width:2px
+    classDef greenNode fill:#E8F5E9,stroke:#4CAF50,color:#1B5E20,stroke-width:2px
+    classDef amberNode fill:#FFF8E1,stroke:#FF9800,color:#E65100,stroke-width:2px
+    classDef redNode fill:#FFEBEE,stroke:#F44336,color:#B71C1C,stroke-width:2px
     classDef decisionNode fill:#F3F4F6,stroke:#6B7280,color:#374151,stroke-width:2px
       </div>
     </div>
 
     <div class="chart-card">
-      <h3>Phase 9: Valuation &amp; Returns</h3>
+      <h3>Phase 9: Valuation &amp; Returns (9 steps &mdash; 6A / 3H)</h3>
       <div class="mermaid">
 graph TB
     subgraph P9 ["Phase 9: Valuation & Returns — Financial Analysis — 2-3 days"]
         direction TB
 
         DEP1["Phase 3: Financial package"]:::greenNode
-        DEP2["Phase 5: Thesis & upside"]:::yellowNode
-        DEP3["Phase 6: Risk matrix"]:::yellowNode
-        DEP4["Phase 7: Diluted shares, 382"]:::yellowNode
-        DEP5["Phase 8: Synergy estimates"]:::yellowNode
+        DEP2["Phase 5: Thesis & upside"]:::amberNode
+        DEP3["Phase 6: Risk matrix"]:::amberNode
+        DEP4["Phase 7: Diluted shares, 382"]:::amberNode
+        DEP5["Phase 8: Synergy estimates"]:::amberNode
 
-        S91["Step 9.1<br/>Comparable companies"]:::greenNode
-        S92["Step 9.2<br/>Precedent transactions"]:::greenNode
-        S93["Step 9.3<br/>DCF model"]:::greenNode
+        S91["Step 9.1<br/>Comparable companies<br/>(5-10 comps)"]:::greenNode
+        S92["Step 9.2<br/>Precedent transactions<br/>(5-10 deals)"]:::greenNode
+        S93["Step 9.3<br/>DCF model<br/>(WACC, FCF, terminal value)"]:::amberNode
         S94["Step 9.4<br/>Historical stock price &<br/>trading analysis (VWAP)"]:::greenNode
-        S95["Step 9.5<br/>Valuation triangulation<br/>(football field)"]:::greenNode
+        S95["Step 9.5<br/>Valuation triangulation<br/>(football field)"]:::amberNode
         D95{"Valuation methods<br/>converge within<br/>reasonable range?"}:::decisionNode
         S96["Step 9.6<br/>Returns analysis<br/>(IRR/MOIC scenarios)"]:::greenNode
         S97["Step 9.7<br/>Premium analysis<br/>(vs precedents & trading)"]:::greenNode
         S98["Step 9.8<br/>Sources & uses table"]:::greenNode
-        S99["Step 9.9<br/>Draft Valuation section"]:::greenNode
+        S99["Step 9.9<br/>Draft Valuation section"]:::amberNode
 
         DEP1 --> S91
         DEP1 --> S92
@@ -587,9 +631,9 @@ graph TB
         S99 --> OUT9(["Output: Comps, Precedents, DCF<br/>Football Field, Returns, S&U"]):::greenNode
     end
 
-    classDef greenNode fill:#DCFCE7,stroke:#16A34A,color:#14532D,stroke-width:2px
-    classDef yellowNode fill:#FEF9C3,stroke:#CA8A04,color:#713F12,stroke-width:2px
-    classDef redNode fill:#FEE2E2,stroke:#DC2626,color:#7F1D1D,stroke-width:2px
+    classDef greenNode fill:#E8F5E9,stroke:#4CAF50,color:#1B5E20,stroke-width:2px
+    classDef amberNode fill:#FFF8E1,stroke:#FF9800,color:#E65100,stroke-width:2px
+    classDef redNode fill:#FFEBEE,stroke:#F44336,color:#B71C1C,stroke-width:2px
     classDef decisionNode fill:#F3F4F6,stroke:#6B7280,color:#374151,stroke-width:2px
       </div>
     </div>
@@ -598,20 +642,20 @@ graph TB
   <!-- ==================== BUSINESS & OPS ==================== -->
   <div class="chart-section" id="bizops">
     <div class="section-header">
-      <h2>Business &amp; Operations — LLM Capability Assessment</h2>
-      <p>Phases 2 &amp; 4. These are the most LLM-friendly phases — primarily data extraction, structuring, and market research from VDR documents.</p>
+      <h2>Business &amp; Operations <span class="team-badge bizops">Phases 2, 4</span></h2>
+      <p>Phase 2 is the most automatable (5 of 6 steps autonomous). Phase 4 is mostly assisted — competitive positioning and market narrative require sector judgment.</p>
     </div>
 
     <div class="legend">
       <span class="legend-title">Legend:</span>
-      <div class="legend-item"><div class="legend-color green"></div>LLM Can Do Today</div>
-      <div class="legend-item"><div class="legend-color yellow"></div>Maybe Future</div>
-      <div class="legend-item"><div class="legend-color red"></div>Cannot Do</div>
-      <div class="legend-item"><div class="legend-color diamond"></div>Decision</div>
+      <div class="legend-item"><div class="legend-color green"></div>Autonomous</div>
+      <div class="legend-item"><div class="legend-color amber"></div>Assisted</div>
+      <div class="legend-item"><div class="legend-color red"></div>Manual</div>
+      <div class="legend-item"><div class="legend-color diamond"></div>Checkpoint</div>
     </div>
 
     <div class="chart-card">
-      <h3>Phase 2: Business Description</h3>
+      <h3>Phase 2: Business Description (6 steps &mdash; 5A / 1H)</h3>
       <div class="mermaid">
 graph TB
     subgraph P2 ["Phase 2: Business Description — Biz & Ops — 1-2 days"]
@@ -621,11 +665,11 @@ graph TB
 
         S21["Step 2.1<br/>Build brand/product matrix"]:::greenNode
         S22["Step 2.2<br/>Analyze facilities &<br/>unit economics"]:::greenNode
-        S23["Step 2.3<br/>Map supply chain"]:::greenNode
-        S24["Step 2.4<br/>Map distribution network"]:::greenNode
+        S23["Step 2.3<br/>Map supply chain<br/>(top 10 suppliers)"]:::greenNode
+        S24["Step 2.4<br/>Map distribution network<br/>& CoC provisions"]:::greenNode
         S25["Step 2.5<br/>Review locations & QC"]:::greenNode
         D25{"All operational<br/>data captured &<br/>cross-referenced?"}:::decisionNode
-        S26["Step 2.6<br/>Draft Business Description<br/>(4-6 pages)"]:::greenNode
+        S26["Step 2.6<br/>Draft Business Description<br/>(4-6 pages)"]:::amberNode
 
         DEP --> S21
         DEP --> S22
@@ -641,15 +685,15 @@ graph TB
         S26 --> OUT2(["Output: Brand Matrix, Facility Table<br/>Supply Chain, Distribution Map"]):::greenNode
     end
 
-    classDef greenNode fill:#DCFCE7,stroke:#16A34A,color:#14532D,stroke-width:2px
-    classDef yellowNode fill:#FEF9C3,stroke:#CA8A04,color:#713F12,stroke-width:2px
-    classDef redNode fill:#FEE2E2,stroke:#DC2626,color:#7F1D1D,stroke-width:2px
+    classDef greenNode fill:#E8F5E9,stroke:#4CAF50,color:#1B5E20,stroke-width:2px
+    classDef amberNode fill:#FFF8E1,stroke:#FF9800,color:#E65100,stroke-width:2px
+    classDef redNode fill:#FFEBEE,stroke:#F44336,color:#B71C1C,stroke-width:2px
     classDef decisionNode fill:#F3F4F6,stroke:#6B7280,color:#374151,stroke-width:2px
       </div>
     </div>
 
     <div class="chart-card">
-      <h3>Phase 4: Industry &amp; Market Context</h3>
+      <h3>Phase 4: Industry &amp; Market Context (4 steps &mdash; 1A / 3H)</h3>
       <div class="mermaid">
 graph TB
     subgraph P4 ["Phase 4: Industry & Market — Biz & Ops — 1 day"]
@@ -658,10 +702,10 @@ graph TB
         DEP["Input: Phase 1 complete"]:::greenNode
 
         S41["Step 4.1<br/>Extract market data<br/>(TAM, growth, drivers)"]:::greenNode
-        S42["Step 4.2<br/>Analyze competitive landscape<br/>(3-5 competitors profiled)"]:::greenNode
-        S43["Step 4.3<br/>Consumer insights &<br/>emerging threats"]:::greenNode
+        S42["Step 4.2<br/>Analyze competitive landscape<br/>(3-5 competitors profiled)"]:::amberNode
+        S43["Step 4.3<br/>Consumer insights &<br/>emerging threats"]:::amberNode
         D43{"Market data<br/>sufficient for<br/>positioning view?"}:::decisionNode
-        S44["Step 4.4<br/>Draft Industry & Market section<br/>(2-3 pages)"]:::greenNode
+        S44["Step 4.4<br/>Draft Industry & Market section<br/>(2-3 pages)"]:::amberNode
 
         DEP --> S41
         DEP --> S42
@@ -673,9 +717,9 @@ graph TB
         S44 --> OUT4(["Output: Market Overview<br/>Competitive Matrix, Share Table"]):::greenNode
     end
 
-    classDef greenNode fill:#DCFCE7,stroke:#16A34A,color:#14532D,stroke-width:2px
-    classDef yellowNode fill:#FEF9C3,stroke:#CA8A04,color:#713F12,stroke-width:2px
-    classDef redNode fill:#FEE2E2,stroke:#DC2626,color:#7F1D1D,stroke-width:2px
+    classDef greenNode fill:#E8F5E9,stroke:#4CAF50,color:#1B5E20,stroke-width:2px
+    classDef amberNode fill:#FFF8E1,stroke:#FF9800,color:#E65100,stroke-width:2px
+    classDef redNode fill:#FFEBEE,stroke:#F44336,color:#B71C1C,stroke-width:2px
     classDef decisionNode fill:#F3F4F6,stroke:#6B7280,color:#374151,stroke-width:2px
       </div>
     </div>
@@ -684,20 +728,20 @@ graph TB
   <!-- ==================== LEGAL & TAX ==================== -->
   <div class="chart-section" id="legal">
     <div class="section-header">
-      <h2>Legal &amp; Tax — LLM Capability Assessment</h2>
-      <p>Phase 7. Data extraction from legal docs is automatable, but legal interpretation, consent tracking with external parties, and regulatory filings are human-dependent.</p>
+      <h2>Legal &amp; Tax <span class="team-badge legal">Phase 7</span></h2>
+      <p>Phase 7 has the most steps (12) and the widest capability spread: 4 autonomous (cap table, 13F, CoC matrix, consent tracker), 6 assisted (voting matrix, board review, shareholder agreements, 382, RWI, drafting), 2 manual (280G, HSR).</p>
     </div>
 
     <div class="legend">
       <span class="legend-title">Legend:</span>
-      <div class="legend-item"><div class="legend-color green"></div>LLM Can Do Today</div>
-      <div class="legend-item"><div class="legend-color yellow"></div>Maybe Future</div>
-      <div class="legend-item"><div class="legend-color red"></div>Cannot Do</div>
-      <div class="legend-item"><div class="legend-color diamond"></div>Decision</div>
+      <div class="legend-item"><div class="legend-color green"></div>Autonomous</div>
+      <div class="legend-item"><div class="legend-color amber"></div>Assisted</div>
+      <div class="legend-item"><div class="legend-color red"></div>Manual</div>
+      <div class="legend-item"><div class="legend-color diamond"></div>Checkpoint</div>
     </div>
 
     <div class="chart-card">
-      <h3>Phase 7: Deal Terms &amp; Structure</h3>
+      <h3>Phase 7: Deal Terms &amp; Structure (12 steps &mdash; 4A / 6H / 2E)</h3>
       <div class="mermaid">
 graph TB
     subgraph P7 ["Phase 7: Deal Terms & Structure — Legal & Tax — 1-2 days"]
@@ -705,44 +749,44 @@ graph TB
 
         DEP["Input: Phase 1 complete<br/>Deal documents received"]:::greenNode
 
-        S71["Step 7.1<br/>Fully diluted cap table<br/>build"]:::greenNode
+        S71["Step 7.1<br/>Fully diluted cap table"]:::greenNode
         S72["Step 7.2<br/>Shareholder base & cost basis<br/>analysis (13F data)"]:::greenNode
-        S73["Step 7.3<br/>Change-of-control matrix<br/>(across all agreements)"]:::yellowNode
-        S74["Step 7.4<br/>Consent & approval tracker<br/>(external parties required)"]:::redNode
-        D74{"All required<br/>consents identified?"}:::decisionNode
-        S75["Step 7.5<br/>Board authorization &<br/>deal process review"]:::redNode
-        S76["Step 7.6<br/>Shareholder agreement review"]:::yellowNode
-        S77["Step 7.7<br/>280G golden parachute<br/>analysis"]:::yellowNode
-        S78["Step 7.8<br/>HSR/antitrust assessment<br/>(regulatory filing)"]:::redNode
-        D78{"HSR filing<br/>required?"}:::decisionNode
-        S79["Step 7.9<br/>Section 382 NOL analysis"]:::yellowNode
-        S710["Step 7.10<br/>RWI pre-diligence report<br/>(insurance broker required)"]:::redNode
-        S711["Step 7.11<br/>Draft Deal Terms section"]:::greenNode
+        S73["Step 7.3<br/>Shareholder Voting Matrix"]:::amberNode
+        S74["Step 7.4<br/>Change-of-control matrix"]:::greenNode
+        S75["Step 7.5<br/>Consent & approval tracker"]:::greenNode
+        S76["Step 7.6<br/>Board authorization &<br/>deal process review"]:::amberNode
+        S77["Step 7.7<br/>Shareholder agreement review"]:::amberNode
+        S78["Step 7.8<br/>280G golden parachute<br/>analysis"]:::redNode
+        S79["Step 7.9<br/>HSR/antitrust assessment"]:::redNode
+        D79{"HSR filing<br/>required?"}:::decisionNode
+        S710["Step 7.10<br/>Section 382 NOL analysis"]:::amberNode
+        S711["Step 7.11<br/>RWI pre-diligence report"]:::amberNode
+        S712["Step 7.12<br/>Draft Deal Terms section"]:::amberNode
 
         DEP --> S71
         S71 --> S72
-        DEP --> S73
+        S72 --> S73
         DEP --> S74
-        S74 --> D74
-        D74 -->|Yes| S711
         DEP --> S75
         DEP --> S76
-        S77 --> S711
-        S78 --> D78
-        D78 -->|Filing needed| S711
-        S71 --> S711
-        S72 --> S711
-        S73 --> S711
-        S75 --> S711
-        S76 --> S711
-        S79 --> S711
-        S710 --> S711
-        S711 --> OUT7(["Output: Cap Table, 13F Analysis<br/>CoC Matrix, Consent Tracker<br/>280G, 382, HSR Timeline"]):::greenNode
+        DEP --> S77
+        S78 --> S712
+        S79 --> D79
+        D79 -->|Filing needed| S712
+        S71 --> S712
+        S73 --> S712
+        S74 --> S712
+        S75 --> S712
+        S76 --> S712
+        S77 --> S712
+        S710 --> S712
+        S711 --> S712
+        S712 --> OUT7(["Output: Cap Table, 13F, Voting Matrix<br/>CoC Matrix, Consent Tracker<br/>280G, 382, HSR Timeline"]):::amberNode
     end
 
-    classDef greenNode fill:#DCFCE7,stroke:#16A34A,color:#14532D,stroke-width:2px
-    classDef yellowNode fill:#FEF9C3,stroke:#CA8A04,color:#713F12,stroke-width:2px
-    classDef redNode fill:#FEE2E2,stroke:#DC2626,color:#7F1D1D,stroke-width:2px
+    classDef greenNode fill:#E8F5E9,stroke:#4CAF50,color:#1B5E20,stroke-width:2px
+    classDef amberNode fill:#FFF8E1,stroke:#FF9800,color:#E65100,stroke-width:2px
+    classDef redNode fill:#FFEBEE,stroke:#F44336,color:#B71C1C,stroke-width:2px
     classDef decisionNode fill:#F3F4F6,stroke:#6B7280,color:#374151,stroke-width:2px
       </div>
     </div>
@@ -751,20 +795,20 @@ graph TB
   <!-- ==================== SYNERGIES ==================== -->
   <div class="chart-section" id="synergies">
     <div class="section-header">
-      <h2>Synergies &amp; Integration — LLM Capability Assessment</h2>
-      <p>Phase 8. Quantification from existing data is automatable, but integration planning requires operational judgment and management engagement.</p>
+      <h2>Synergies &amp; Integration <span class="team-badge synergy">Phase 8</span></h2>
+      <p>Phase 8 is predominantly assisted (5 of 7 steps). Prior acquisition review is autonomous. People & org integration is the only manual step — requires direct management engagement.</p>
     </div>
 
     <div class="legend">
       <span class="legend-title">Legend:</span>
-      <div class="legend-item"><div class="legend-color green"></div>LLM Can Do Today</div>
-      <div class="legend-item"><div class="legend-color yellow"></div>Maybe Future</div>
-      <div class="legend-item"><div class="legend-color red"></div>Cannot Do</div>
-      <div class="legend-item"><div class="legend-color diamond"></div>Decision</div>
+      <div class="legend-item"><div class="legend-color green"></div>Autonomous</div>
+      <div class="legend-item"><div class="legend-color amber"></div>Assisted</div>
+      <div class="legend-item"><div class="legend-color red"></div>Manual</div>
+      <div class="legend-item"><div class="legend-color diamond"></div>Checkpoint</div>
     </div>
 
     <div class="chart-card">
-      <h3>Phase 8: Synergies &amp; Integration</h3>
+      <h3>Phase 8: Synergies &amp; Integration (7 steps &mdash; 1A / 5H / 1E)</h3>
       <div class="mermaid">
 graph TB
     subgraph P8 ["Phase 8: Synergies & Integration — 1-2 days"]
@@ -773,14 +817,14 @@ graph TB
         DEP1["Input from Phase 2<br/>Facility ops, headcount, IT"]:::greenNode
         DEP2["Input from Phase 3<br/>Cost structure, WC, capex"]:::greenNode
 
-        S81["Step 8.1<br/>Categorize & quantify synergies<br/>(cost + revenue, confidence-weighted)"]:::greenNode
-        S82["Step 8.2<br/>Estimate one-time costs<br/>to achieve synergies"]:::yellowNode
+        S81["Step 8.1<br/>Categorize & quantify synergies<br/>(confidence-weighted)"]:::amberNode
+        S82["Step 8.2<br/>Estimate one-time costs<br/>to achieve synergies"]:::amberNode
         D82{"Synergy estimates<br/>realistic vs.<br/>comparable deals?"}:::decisionNode
         S83["Step 8.3<br/>Review prior acquisition<br/>integration performance"]:::greenNode
-        S84["Step 8.4<br/>Outline integration plan<br/>(Day 1, 30/60/90, Year 1)"]:::yellowNode
+        S84["Step 8.4<br/>Outline integration plan<br/>(Day 1, 30/60/90, Year 1)"]:::amberNode
         S85["Step 8.5<br/>People & org integration<br/>(key man, retention needs)"]:::redNode
-        S86["Step 8.6<br/>IT systems integration<br/>assessment"]:::yellowNode
-        S87["Step 8.7<br/>Draft Synergies & Integration<br/>section with waterfall"]:::greenNode
+        S86["Step 8.6<br/>IT systems integration<br/>assessment"]:::amberNode
+        S87["Step 8.7<br/>Draft Synergies & Integration<br/>section with waterfall"]:::amberNode
 
         DEP1 --> S81
         DEP2 --> S81
@@ -792,12 +836,12 @@ graph TB
         S84 --> S86
         S85 --> S87
         S86 --> S87
-        S87 --> OUT8(["Output: Synergy Table & Waterfall<br/>Integration Timeline, People Plan"]):::greenNode
+        S87 --> OUT8(["Output: Synergy Table & Waterfall<br/>Integration Timeline, People Plan"]):::amberNode
     end
 
-    classDef greenNode fill:#DCFCE7,stroke:#16A34A,color:#14532D,stroke-width:2px
-    classDef yellowNode fill:#FEF9C3,stroke:#CA8A04,color:#713F12,stroke-width:2px
-    classDef redNode fill:#FEE2E2,stroke:#DC2626,color:#7F1D1D,stroke-width:2px
+    classDef greenNode fill:#E8F5E9,stroke:#4CAF50,color:#1B5E20,stroke-width:2px
+    classDef amberNode fill:#FFF8E1,stroke:#FF9800,color:#E65100,stroke-width:2px
+    classDef redNode fill:#FFEBEE,stroke:#F44336,color:#B71C1C,stroke-width:2px
     classDef decisionNode fill:#F3F4F6,stroke:#6B7280,color:#374151,stroke-width:2px
       </div>
     </div>
@@ -807,34 +851,34 @@ graph TB
   <div class="chart-section" id="summary">
     <div class="section-header">
       <h2>LLM Capability Summary by Step</h2>
-      <p>A consolidated view of all 60+ workflow steps classified by LLM automation potential. This helps prioritise where to deploy AI tooling for maximum time savings.</p>
+      <p>Consolidated view of all 66 workflow steps classified by LLM automation capability, aligned with Build Guide v4. Autonomous = LLM end-to-end; Assisted = LLM drafts, human reviews; Manual = human required.</p>
     </div>
 
     <div class="info-grid">
       <div class="info-box green-stat">
-        <h4>Green — LLM Can Do</h4>
-        <div class="value">36 steps</div>
-        <div class="detail">Data extraction, structuring, drafting, comps, modelling, sensitivity analysis</div>
+        <h4>Autonomous (Green)</h4>
+        <div class="value">28 steps (42%)</div>
+        <div class="detail">Data extraction, structuring, comps, modelling, cap tables, sensitivity analysis</div>
       </div>
-      <div class="info-box yellow-stat">
-        <h4>Yellow — Maybe Future</h4>
-        <div class="value">17 steps</div>
-        <div class="detail">QoE reconciliation, legal interpretation, thesis formulation, integration planning</div>
+      <div class="info-box amber-stat">
+        <h4>Assisted (Amber)</h4>
+        <div class="value">33 steps (50%)</div>
+        <div class="detail">QoE, narrative drafting, thesis, risk scoring, legal interpretation, integration planning</div>
       </div>
       <div class="info-box red-stat">
-        <h4>Red — Cannot Do</h4>
-        <div class="value">10 steps</div>
-        <div class="detail">IC recommendation, senior sign-off, external consent, HSR filing, RWI, people decisions</div>
+        <h4>Manual (Red)</h4>
+        <div class="value">5 steps (8%)</div>
+        <div class="detail">5.4 Differentiated insights, 7.8 280G, 7.9 HSR, 8.5 People integration, 10.1 IC recommendation</div>
       </div>
     </div>
 
     <div class="chart-card">
-      <h3>Capability Distribution by Phase</h3>
+      <h3>Capability Distribution Across All 66 Steps</h3>
       <div class="mermaid">
-pie title LLM Capability Across All Workflow Steps
-    "Can Do Today (36)" : 36
-    "Maybe Future (17)" : 17
-    "Cannot Do (10)" : 10
+pie title LLM Capability — 66 Steps
+    "Autonomous (28)" : 28
+    "Assisted (33)" : 33
+    "Manual (5)" : 5
       </div>
     </div>
 
@@ -842,60 +886,61 @@ pie title LLM Capability Across All Workflow Steps
       <h3>Phase-by-Phase Breakdown</h3>
       <div class="mermaid">
 graph LR
-    subgraph Phase1 ["Phase 1: Transaction Overview"]
-        P1G["6 Green"]:::greenNode
-        P1Y["1 Yellow"]:::yellowNode
+    subgraph Phase1 ["Phase 1: Transaction Overview (7)"]
+        P1G["4 Autonomous"]:::greenNode
+        P1A["3 Assisted"]:::amberNode
     end
 
-    subgraph Phase2 ["Phase 2: Business Description"]
-        P2G["6 Green"]:::greenNode
+    subgraph Phase2 ["Phase 2: Business Description (6)"]
+        P2G["5 Autonomous"]:::greenNode
+        P2A["1 Assisted"]:::amberNode
     end
 
-    subgraph Phase3 ["Phase 3: Financial Foundation"]
-        P3G["5 Green"]:::greenNode
-        P3Y["3 Yellow"]:::yellowNode
+    subgraph Phase3 ["Phase 3: Financial Foundation (8)"]
+        P3G["4 Autonomous"]:::greenNode
+        P3A["4 Assisted"]:::amberNode
     end
 
-    subgraph Phase4 ["Phase 4: Industry & Market"]
-        P4G["4 Green"]:::greenNode
+    subgraph Phase4 ["Phase 4: Industry & Market (4)"]
+        P4G["1 Autonomous"]:::greenNode
+        P4A["3 Assisted"]:::amberNode
     end
 
-    subgraph Phase5 ["Phase 5: Investment Thesis"]
-        P5G["3 Green"]:::greenNode
-        P5Y["1 Yellow"]:::yellowNode
-        P5R["1 Red"]:::redNode
+    subgraph Phase5 ["Phase 5: Investment Thesis (4)"]
+        P5A["3 Assisted"]:::amberNode
+        P5R["1 Manual"]:::redNode
     end
 
-    subgraph Phase6 ["Phase 6: Key Risks"]
-        P6G["5 Green"]:::greenNode
-        P6Y["2 Yellow"]:::yellowNode
+    subgraph Phase6 ["Phase 6: Key Risks (6)"]
+        P6G["3 Autonomous"]:::greenNode
+        P6A["3 Assisted"]:::amberNode
     end
 
-    subgraph Phase7 ["Phase 7: Deal Terms"]
-        P7G["3 Green"]:::greenNode
-        P7Y["4 Yellow"]:::yellowNode
-        P7R["4 Red"]:::redNode
+    subgraph Phase7 ["Phase 7: Deal Terms (12)"]
+        P7G["4 Autonomous"]:::greenNode
+        P7A["6 Assisted"]:::amberNode
+        P7R["2 Manual"]:::redNode
     end
 
-    subgraph Phase8 ["Phase 8: Synergies"]
-        P8G["3 Green"]:::greenNode
-        P8Y["3 Yellow"]:::yellowNode
-        P8R["1 Red"]:::redNode
+    subgraph Phase8 ["Phase 8: Synergies (7)"]
+        P8G["1 Autonomous"]:::greenNode
+        P8A["5 Assisted"]:::amberNode
+        P8R["1 Manual"]:::redNode
     end
 
-    subgraph Phase9 ["Phase 9: Valuation"]
-        P9G["9 Green"]:::greenNode
+    subgraph Phase9 ["Phase 9: Valuation (9)"]
+        P9G["6 Autonomous"]:::greenNode
+        P9A["3 Assisted"]:::amberNode
     end
 
-    subgraph Phase10 ["Phase 10: Recommendation"]
-        P10G["1 Green"]:::greenNode
-        P10Y["2 Yellow"]:::yellowNode
-        P10R["2 Red"]:::redNode
+    subgraph Phase10 ["Phase 10: Recommendation (3)"]
+        P10A["2 Assisted"]:::amberNode
+        P10R["1 Manual"]:::redNode
     end
 
-    classDef greenNode fill:#DCFCE7,stroke:#16A34A,color:#14532D,stroke-width:2px
-    classDef yellowNode fill:#FEF9C3,stroke:#CA8A04,color:#713F12,stroke-width:2px
-    classDef redNode fill:#FEE2E2,stroke:#DC2626,color:#7F1D1D,stroke-width:2px
+    classDef greenNode fill:#E8F5E9,stroke:#4CAF50,color:#1B5E20,stroke-width:2px
+    classDef amberNode fill:#FFF8E1,stroke:#FF9800,color:#E65100,stroke-width:2px
+    classDef redNode fill:#FFEBEE,stroke:#F44336,color:#B71C1C,stroke-width:2px
       </div>
     </div>
 
@@ -905,20 +950,38 @@ graph LR
 graph TD
     T["Top Automation Targets<br/>(Highest time savings)"]:::decisionNode
 
-    T --> A["Phase 9: Valuation<br/>9/9 steps green<br/>2-3 days saveable"]:::greenNode
-    T --> B["Phase 2: Business Description<br/>6/6 steps green<br/>1-2 days saveable"]:::greenNode
-    T --> C["Phase 4: Industry & Market<br/>4/4 steps green<br/>1 day saveable"]:::greenNode
-    T --> D["Phase 1: Transaction Overview<br/>6/7 steps green<br/>0.5 day saveable"]:::greenNode
+    T --> A["Phase 2: Business Description<br/>5/6 autonomous<br/>1-2 days saveable"]:::greenNode
+    T --> B["Phase 9: Valuation<br/>6/9 autonomous, 3 assisted<br/>2-3 days saveable"]:::greenNode
+    T --> C["Phase 1: Transaction Overview<br/>4/7 autonomous<br/>0.5 day saveable"]:::greenNode
 
-    T --> E["Phase 3: Financial Foundation<br/>5/8 green, 3 yellow<br/>Partial automation"]:::yellowNode
-    T --> F["Phase 7: Deal Terms<br/>3/11 green, 4 yellow, 4 red<br/>Mixed — legal bottleneck"]:::yellowNode
+    T --> D["Phase 3: Financial Foundation<br/>4/8 autonomous, 4 assisted<br/>Partial automation"]:::amberNode
+    T --> E["Phase 6: Key Risks<br/>3/6 autonomous, 3 assisted<br/>Partial automation"]:::amberNode
+    T --> F["Phase 7: Deal Terms<br/>4/12 autonomous, 6 assisted, 2 manual<br/>Mixed — legal bottleneck"]:::amberNode
 
-    T --> G["Phase 10: Recommendation<br/>1/5 green, 2 yellow, 2 red<br/>Mostly human required"]:::redNode
+    T --> G["Phase 5: Investment Thesis<br/>0/4 autonomous, 3 assisted, 1 manual<br/>Judgment-heavy"]:::redNode
+    T --> H["Phase 10: Recommendation<br/>0/3 autonomous, 2 assisted, 1 manual<br/>Senior sign-off required"]:::redNode
 
-    classDef greenNode fill:#DCFCE7,stroke:#16A34A,color:#14532D,stroke-width:2px
-    classDef yellowNode fill:#FEF9C3,stroke:#CA8A04,color:#713F12,stroke-width:2px
-    classDef redNode fill:#FEE2E2,stroke:#DC2626,color:#7F1D1D,stroke-width:2px
+    classDef greenNode fill:#E8F5E9,stroke:#4CAF50,color:#1B5E20,stroke-width:2px
+    classDef amberNode fill:#FFF8E1,stroke:#FF9800,color:#E65100,stroke-width:2px
+    classDef redNode fill:#FFEBEE,stroke:#F44336,color:#B71C1C,stroke-width:2px
     classDef decisionNode fill:#F3F4F6,stroke:#6B7280,color:#374151,stroke-width:2px
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <h3>The 5 Manual Steps — Where Human Expertise Is Non-Negotiable</h3>
+      <div class="mermaid">
+graph LR
+    subgraph MANUAL ["Manual Steps (Red) — 8% of workflow"]
+        direction TB
+        M1["Step 5.4<br/>Differentiated insights<br/><i>Proprietary edge requires<br/>deal-specific intuition</i>"]:::redNode
+        M2["Step 7.8<br/>280G golden parachute<br/><i>Licensed tax advisor must<br/>compute excise-tax exposure</i>"]:::redNode
+        M3["Step 7.9<br/>HSR/antitrust assessment<br/><i>Antitrust counsel must assess<br/>filing & second-request risk</i>"]:::redNode
+        M4["Step 8.5<br/>People & org integration<br/><i>Sensitive personnel decisions<br/>require management engagement</i>"]:::redNode
+        M5["Step 10.1<br/>IC recommendation<br/><i>Go/no-go and bid price<br/>require MD-level authority</i>"]:::redNode
+    end
+
+    classDef redNode fill:#FFEBEE,stroke:#F44336,color:#B71C1C,stroke-width:2px
       </div>
     </div>
   </div>
@@ -926,8 +989,8 @@ graph TD
 </div>
 
 <div class="footer">
-  <p>IC Memo Workflow Charts v2.0 — LLM Capability Assessment &bull; February 2026</p>
-  <p>Green = LLM Can Do &bull; Yellow = Maybe Future &bull; Red = Cannot Do (Human Required)</p>
+  <p>IC Memo Workflow Charts v3.0 — Aligned with Build Guide v4, Source Document Guide, and RACI Matrix &bull; February 2026</p>
+  <p>Autonomous 42% (28 steps) &bull; Assisted 50% (33 steps) &bull; Manual 8% (5 steps) &bull; 66 steps total</p>
 </div>
 
 <script>
@@ -935,9 +998,9 @@ graph TD
     startOnLoad: false,
     theme: 'base',
     themeVariables: {
-      primaryColor: '#DCFCE7',
-      primaryTextColor: '#14532D',
-      primaryBorderColor: '#16A34A',
+      primaryColor: '#E8F5E9',
+      primaryTextColor: '#1B5E20',
+      primaryBorderColor: '#4CAF50',
       lineColor: '#64748B',
       secondaryColor: '#F1F5F9',
       tertiaryColor: '#F8FAFC',
