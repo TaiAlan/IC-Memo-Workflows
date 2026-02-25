@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IC Memo Workflow Charts v3 — LLM Capability Assessment</title>
+  <title>IC Memo Workflow Charts v4 — LLM Capability Assessment</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js"></script>
   <style>
     :root {
@@ -256,9 +256,9 @@
 <body>
 
 <div class="header">
-  <div class="version-badge">v3.0 — Aligned with Build Guide v4</div>
+  <div class="version-badge">v4.0 — Aligned with Build Guide v5</div>
   <h1>IC Memo Workflow Charts</h1>
-  <div class="subtitle">66 Steps &bull; 10 Phases &bull; 5 Teams &bull; LLM Capability Assessment</div>
+  <div class="subtitle">66 Steps &bull; 10 Phases &bull; 5 Teams &bull; 11 Handoffs &bull; 10 Reverse-Trace Validations</div>
   <div class="gar-bar">
     <div class="gar-seg gar-green">Autonomous 42%</div>
     <div class="gar-seg gar-amber">Assisted 50%</div>
@@ -285,7 +285,7 @@
   <div class="chart-section active" id="overall">
     <div class="section-header">
       <h2>Master Build Sequence — LLM Capability Overlay</h2>
-      <p>Each phase is colour-coded by the predominant LLM capability level. Diamonds represent decision gates (checkpoints) that require human judgment or external sign-off. 66 steps across 10 phases, 10 checkpoints, 8 handoffs.</p>
+      <p>Each phase is colour-coded by the predominant LLM capability level. Diamonds represent decision gates (checkpoints) that require human judgment or external sign-off. 66 steps across 10 phases, 10 checkpoints, 11 cross-team handoffs, 10 reverse-trace validations.</p>
     </div>
 
     <div class="legend">
@@ -322,21 +322,21 @@ graph TD
 
     subgraph FOUNDATION ["FOUNDATION PHASES (Sequential)"]
         direction TB
-        P1["Phase 1: Transaction Overview<br/><b>4A / 3H — mostly autonomous</b><br/>0.5 day"]:::greenNode
+        P1["Phase 1: Transaction Overview<br/><b>4 Autonomous / 3 Assisted</b><br/>0.5 day"]:::greenNode
         P1 --> CP1{"CP 1: CIM verified?<br/>Structure mapped?<br/>Timeline set?"}:::decisionNode
-        CP1 -->|Yes| P2["Phase 2: Business Description<br/><b>5A / 1H — mostly autonomous</b><br/>1-2 days"]:::greenNode
-        CP1 -->|Yes| P3["Phase 3: Financial Foundation<br/><b>4A / 4H — evenly split</b><br/>2-3 days"]:::amberNode
+        CP1 -->|Yes| P2["Phase 2: Business Description<br/><b>5 Autonomous / 1 Assisted</b><br/>1-2 days"]:::greenNode
+        CP1 -->|Yes| P3["Phase 3: Financial Foundation<br/><b>4 Autonomous / 4 Assisted</b><br/>2-3 days"]:::amberNode
         P2 --> CP2{"CP 2: Brands profiled?<br/>Ops mapped?"}:::decisionNode
         P3 --> CP3{"CP 3: EBITDA reconciled?<br/>Model audited?"}:::decisionNode
     end
 
     subgraph PARALLEL ["PARALLEL PHASES (Concurrent)"]
         direction TB
-        P4["Phase 4: Industry & Market<br/><b>1A / 3H — mostly assisted</b><br/>1 day"]:::amberNode
-        P5["Phase 5: Investment Thesis<br/><b>0A / 3H / 1E — assisted + manual</b><br/>1 day"]:::amberNode
-        P6["Phase 6: Key Risks<br/><b>3A / 3H — evenly split</b><br/>1 day"]:::amberNode
-        P7["Phase 7: Deal Terms & Structure<br/><b>4A / 6H / 2E — mixed</b><br/>1-2 days"]:::amberNode
-        P8["Phase 8: Synergies & Integration<br/><b>1A / 5H / 1E — mostly assisted</b><br/>1-2 days"]:::amberNode
+        P4["Phase 4: Industry & Market<br/><b>1 Autonomous / 3 Assisted</b><br/>1 day"]:::amberNode
+        P5["Phase 5: Investment Thesis<br/><b>3 Assisted / 1 Manual</b><br/>1 day"]:::amberNode
+        P6["Phase 6: Key Risks<br/><b>3 Autonomous / 3 Assisted</b><br/>1 day"]:::amberNode
+        P7["Phase 7: Deal Terms & Structure<br/><b>4 Autonomous / 6 Assisted / 2 Manual</b><br/>1-2 days"]:::amberNode
+        P8["Phase 8: Synergies & Integration<br/><b>1 Autonomous / 5 Assisted / 1 Manual</b><br/>1-2 days"]:::amberNode
     end
 
     CP1 -->|Yes| P4
@@ -357,9 +357,9 @@ graph TD
 
     subgraph INTEGRATION ["INTEGRATION PHASES"]
         direction TB
-        P9["Phase 9: Valuation & Returns<br/><b>6A / 3H — mostly autonomous</b><br/>2-3 days"]:::greenNode
+        P9["Phase 9: Valuation & Returns<br/><b>6 Autonomous / 3 Assisted</b><br/>2-3 days"]:::greenNode
         P9 --> CP9{"CP 9: Valuation triangulated?<br/>Returns modelled?"}:::decisionNode
-        CP9 -->|Yes| P10["Phase 10: Recommendation<br/><b>0A / 2H / 1E — manual + assisted</b><br/>1 day"]:::redNode
+        CP9 -->|Yes| P10["Phase 10: Recommendation<br/><b>2 Assisted / 1 Manual</b><br/>1 day"]:::redNode
         P10 --> CP10{"FINAL: Numbers consistent?<br/>Sources traced?"}:::decisionNode
     end
 
@@ -393,7 +393,7 @@ graph TD
     </div>
 
     <div class="chart-card">
-      <h3>Phase 1: Transaction Overview (7 steps &mdash; 4A / 3H)</h3>
+      <h3>Phase 1: Transaction Overview (7 steps &mdash; 4 Autonomous / 3 Assisted)</h3>
       <div class="mermaid">
 graph TB
     subgraph P1 ["Phase 1: Transaction Overview — Deal Leadership — 0.5 day"]
@@ -428,7 +428,7 @@ graph TB
     </div>
 
     <div class="chart-card">
-      <h3>Phase 5: Investment Thesis &amp; Upside Case (4 steps &mdash; 3H / 1E)</h3>
+      <h3>Phase 5: Investment Thesis &amp; Upside Case (4 steps &mdash; 3 Assisted / 1 Manual)</h3>
       <div class="mermaid">
 graph TB
     subgraph P5 ["Phase 5: Investment Thesis — Deal Leadership — 1 day"]
@@ -462,7 +462,7 @@ graph TB
     </div>
 
     <div class="chart-card">
-      <h3>Phase 6: Key Risks (6 steps &mdash; 3A / 3H)</h3>
+      <h3>Phase 6: Key Risks (6 steps &mdash; 3 Autonomous / 3 Assisted)</h3>
       <div class="mermaid">
 graph TB
     subgraph P6 ["Phase 6: Key Risks — Deal Leadership — 1 day"]
@@ -498,7 +498,7 @@ graph TB
     </div>
 
     <div class="chart-card">
-      <h3>Phase 10: Recommendation &amp; Final Assembly (3 steps &mdash; 2H / 1E)</h3>
+      <h3>Phase 10: Recommendation &amp; Final Assembly (3 steps &mdash; 2 Assisted / 1 Manual)</h3>
       <div class="mermaid">
 graph TB
     subgraph P10 ["Phase 10: Recommendation & Assembly — Deal Leadership — 1 day"]
@@ -544,7 +544,7 @@ graph TB
     </div>
 
     <div class="chart-card">
-      <h3>Phase 3: Financial Foundation (8 steps &mdash; 4A / 4H)</h3>
+      <h3>Phase 3: Financial Foundation (8 steps &mdash; 4 Autonomous / 4 Assisted)</h3>
       <div class="mermaid">
 graph TB
     subgraph P3 ["Phase 3: Financial Foundation — Financial Analysis — 2-3 days"]
@@ -586,7 +586,7 @@ graph TB
     </div>
 
     <div class="chart-card">
-      <h3>Phase 9: Valuation &amp; Returns (9 steps &mdash; 6A / 3H)</h3>
+      <h3>Phase 9: Valuation &amp; Returns (9 steps &mdash; 6 Autonomous / 3 Assisted)</h3>
       <div class="mermaid">
 graph TB
     subgraph P9 ["Phase 9: Valuation & Returns — Financial Analysis — 2-3 days"]
@@ -655,7 +655,7 @@ graph TB
     </div>
 
     <div class="chart-card">
-      <h3>Phase 2: Business Description (6 steps &mdash; 5A / 1H)</h3>
+      <h3>Phase 2: Business Description (6 steps &mdash; 5 Autonomous / 1 Assisted)</h3>
       <div class="mermaid">
 graph TB
     subgraph P2 ["Phase 2: Business Description — Biz & Ops — 1-2 days"]
@@ -693,7 +693,7 @@ graph TB
     </div>
 
     <div class="chart-card">
-      <h3>Phase 4: Industry &amp; Market Context (4 steps &mdash; 1A / 3H)</h3>
+      <h3>Phase 4: Industry &amp; Market Context (4 steps &mdash; 1 Autonomous / 3 Assisted)</h3>
       <div class="mermaid">
 graph TB
     subgraph P4 ["Phase 4: Industry & Market — Biz & Ops — 1 day"]
@@ -741,7 +741,7 @@ graph TB
     </div>
 
     <div class="chart-card">
-      <h3>Phase 7: Deal Terms &amp; Structure (12 steps &mdash; 4A / 6H / 2E)</h3>
+      <h3>Phase 7: Deal Terms &amp; Structure (12 steps &mdash; 4 Autonomous / 6 Assisted / 2 Manual)</h3>
       <div class="mermaid">
 graph TB
     subgraph P7 ["Phase 7: Deal Terms & Structure — Legal & Tax — 1-2 days"]
@@ -808,7 +808,7 @@ graph TB
     </div>
 
     <div class="chart-card">
-      <h3>Phase 8: Synergies &amp; Integration (7 steps &mdash; 1A / 5H / 1E)</h3>
+      <h3>Phase 8: Synergies &amp; Integration (7 steps &mdash; 1 Autonomous / 5 Assisted / 1 Manual)</h3>
       <div class="mermaid">
 graph TB
     subgraph P8 ["Phase 8: Synergies & Integration — 1-2 days"]
@@ -851,7 +851,7 @@ graph TB
   <div class="chart-section" id="summary">
     <div class="section-header">
       <h2>LLM Capability Summary by Step</h2>
-      <p>Consolidated view of all 66 workflow steps classified by LLM automation capability, aligned with Build Guide v4. Autonomous = LLM end-to-end; Assisted = LLM drafts, human reviews; Manual = human required.</p>
+      <p>Consolidated view of all 66 workflow steps classified by LLM automation capability, aligned with Build Guide v5. Autonomous = LLM end-to-end; Assisted = LLM drafts, human reviews; Manual = human required.</p>
     </div>
 
     <div class="info-grid">
@@ -989,7 +989,7 @@ graph LR
 </div>
 
 <div class="footer">
-  <p>IC Memo Workflow Charts v3.0 — Aligned with Build Guide v4, Source Document Guide, and RACI Matrix &bull; February 2026</p>
+  <p>IC Memo Workflow Charts v4.0 — Aligned with Build Guide v5, Source Document Guide, and RACI Matrix &bull; February 2026</p>
   <p>Autonomous 42% (28 steps) &bull; Assisted 50% (33 steps) &bull; Manual 8% (5 steps) &bull; 66 steps total</p>
 </div>
 
